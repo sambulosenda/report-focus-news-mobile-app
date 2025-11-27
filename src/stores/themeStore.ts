@@ -14,20 +14,20 @@ interface ThemeState {
 
 export const useThemeStore = create<ThemeState>()(
   persist(
-    (set) => ({
+    set => ({
       theme: 'light',
       isSystemTheme: true,
-      setTheme: (theme) => set({ theme, isSystemTheme: false }),
+      setTheme: theme => set({ theme, isSystemTheme: false }),
       toggleTheme: () =>
-        set((state) => ({
+        set(state => ({
           theme: state.theme === 'light' ? 'dark' : 'light',
           isSystemTheme: false,
         })),
-      setSystemTheme: (useSystem) => set({ isSystemTheme: useSystem }),
+      setSystemTheme: useSystem => set({ isSystemTheme: useSystem }),
     }),
     {
       name: 'theme-storage',
       storage: createJSONStorage(() => AsyncStorage),
-    }
-  )
+    },
+  ),
 );

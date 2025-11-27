@@ -12,7 +12,7 @@ export default function SearchScreen() {
 
   const renderItem = useCallback(
     ({ item }: { item: Article }) => <ArticleCardCompact article={item} />,
-    []
+    [],
   );
 
   const keyExtractor = useCallback((item: Article) => item.id, []);
@@ -50,9 +50,7 @@ export default function SearchScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
       <View className="px-4 pt-2 pb-4">
-        <Text className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">
-          Search
-        </Text>
+        <Text className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Search</Text>
       </View>
 
       <SearchBar value={query} onChangeText={setQuery} onClear={clear} />

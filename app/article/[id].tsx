@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView, useColorScheme, Pressable, useWindowDimensions } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  useColorScheme,
+  Pressable,
+  useWindowDimensions,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useQuery } from '@apollo/client/react';
@@ -51,8 +58,7 @@ export default function ArticleScreen() {
         <View className="flex-row items-center px-4 py-2">
           <Pressable
             onPress={() => router.back()}
-            className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
-          >
+            className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800">
             <Ionicons name="arrow-back" size={24} color={isDark ? '#fff' : '#000'} />
           </Pressable>
         </View>
@@ -60,8 +66,7 @@ export default function ArticleScreen() {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
-      >
+        contentContainerStyle={{ paddingBottom: 40 }}>
         {/* Hero Image */}
         {imageUrl && (
           <View className="h-64 bg-gray-200 dark:bg-neutral-800">
@@ -103,29 +108,39 @@ export default function ArticleScreen() {
 
           {/* Content */}
           {article.content && (
-          <RenderHtml
-            contentWidth={width - 32}
-            source={{ html: article.content }}
-            baseStyle={{
-              color: isDark ? '#fff' : '#000',
-              fontSize: 17,
-              lineHeight: 26,
-            }}
-            tagsStyles={{
-              p: { marginBottom: 16 },
-              a: { color: '#007AFF' },
-              h2: { fontSize: 22, fontWeight: 'bold', marginTop: 24, marginBottom: 12 },
-              h3: { fontSize: 20, fontWeight: 'bold', marginTop: 20, marginBottom: 10 },
-              img: { borderRadius: 8, marginVertical: 16 },
-              blockquote: {
-                borderLeftWidth: 3,
-                borderLeftColor: '#007AFF',
-                paddingLeft: 16,
-                marginVertical: 16,
-                fontStyle: 'italic',
-              },
-            }}
-          />
+            <RenderHtml
+              contentWidth={width - 32}
+              source={{ html: article.content }}
+              baseStyle={{
+                color: isDark ? '#fff' : '#000',
+                fontSize: 17,
+                lineHeight: 26,
+              }}
+              tagsStyles={{
+                p: { marginBottom: 16 },
+                a: { color: '#007AFF' },
+                h2: {
+                  fontSize: 22,
+                  fontWeight: 'bold',
+                  marginTop: 24,
+                  marginBottom: 12,
+                },
+                h3: {
+                  fontSize: 20,
+                  fontWeight: 'bold',
+                  marginTop: 20,
+                  marginBottom: 10,
+                },
+                img: { borderRadius: 8, marginVertical: 16 },
+                blockquote: {
+                  borderLeftWidth: 3,
+                  borderLeftColor: '#007AFF',
+                  paddingLeft: 16,
+                  marginVertical: 16,
+                  fontStyle: 'italic',
+                },
+              }}
+            />
           )}
         </View>
       </ScrollView>

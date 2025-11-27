@@ -13,9 +13,7 @@ export default function SettingsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
       <View className="px-4 pt-2 pb-4">
-        <Text className="text-3xl font-bold text-gray-900 dark:text-white">
-          Settings
-        </Text>
+        <Text className="text-3xl font-bold text-gray-900 dark:text-white">Settings</Text>
       </View>
 
       <View className="mx-4 rounded-xl overflow-hidden bg-gray-100 dark:bg-neutral-900">
@@ -28,9 +26,7 @@ export default function SettingsScreen() {
               color={isDark ? '#fff' : '#000'}
               style={{ marginRight: 12 }}
             />
-            <Text className="text-base text-gray-900 dark:text-white">
-              Use System Theme
-            </Text>
+            <Text className="text-base text-gray-900 dark:text-white">Use System Theme</Text>
           </View>
           <Switch
             value={isSystemTheme}
@@ -48,9 +44,7 @@ export default function SettingsScreen() {
               color={isDark ? '#fff' : '#000'}
               style={{ marginRight: 12 }}
             />
-            <Text className="text-base text-gray-900 dark:text-white">
-              Dark Mode
-            </Text>
+            <Text className="text-base text-gray-900 dark:text-white">Dark Mode</Text>
           </View>
           <Switch
             value={isDark}
@@ -71,17 +65,13 @@ export default function SettingsScreen() {
               color={isDark ? '#fff' : '#000'}
               style={{ marginRight: 12 }}
             />
-            <Text className="text-base text-gray-900 dark:text-white">
-              Version
-            </Text>
+            <Text className="text-base text-gray-900 dark:text-white">Version</Text>
           </View>
           <Text className="text-base text-gray-500">1.0.0</Text>
         </View>
       </View>
 
-      <Text className="text-center mt-6 text-sm text-gray-500">
-        Report Focus News
-      </Text>
+      <Text className="text-center mt-6 text-sm text-gray-500">Report Focus News</Text>
     </SafeAreaView>
   );
 }

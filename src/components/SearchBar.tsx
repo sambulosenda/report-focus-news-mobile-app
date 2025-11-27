@@ -16,12 +16,7 @@ export function SearchBar({
 }: SearchBarProps) {
   return (
     <View className="mx-4 mb-4 flex-row items-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4 py-3">
-      <Ionicons
-        name="search"
-        size={20}
-        color="#8E8E93"
-        style={{ marginRight: 8 }}
-      />
+      <Ionicons name="search" size={20} color="#8E8E93" style={{ marginRight: 8 }} />
       <TextInput
         value={value}
         onChangeText={onChangeText}

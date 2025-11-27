@@ -22,12 +22,12 @@ export default function HomeScreen() {
 
   const filteredArticles = useMemo(() => {
     if (!featuredArticle) return articles;
-    return articles.filter((a) => a.id !== featuredArticle.id);
+    return articles.filter(a => a.id !== featuredArticle.id);
   }, [articles, featuredArticle]);
 
   const renderItem = useCallback(
     ({ item }: { item: Article }) => <ArticleCard article={item} />,
-    []
+    [],
   );
 
   const keyExtractor = useCallback((item: Article) => item.id, []);
@@ -36,9 +36,7 @@ export default function HomeScreen() {
     () => (
       <View>
         <View className="px-4 pt-2 pb-4">
-          <Text className="text-3xl font-bold text-gray-900 dark:text-white">
-            Report Focus
-          </Text>
+          <Text className="text-3xl font-bold text-gray-900 dark:text-white">Report Focus</Text>
           <Text className="text-base mt-1 text-gray-600 dark:text-gray-400">
             Stay informed with the latest news
           </Text>
@@ -49,12 +47,12 @@ export default function HomeScreen() {
         </Text>
       </View>
     ),
-    [featuredArticle]
+    [featuredArticle],
   );
 
   const ListFooter = useCallback(
     () => (loading && articles.length > 0 ? <LoadingSpinner size="small" /> : null),
-    [loading, articles.length]
+    [loading, articles.length],
   );
 
   if (loading && articles.length === 0) {

@@ -18,8 +18,7 @@ export default function TabLayout() {
           backgroundColor: isDark ? '#1c1c1e' : '#f2f2f7',
           borderTopColor: isDark ? '#38383a' : '#e5e5ea',
         },
-      }}
-    >
+      }}>
       <Tabs.Screen
         name="index"
         options={{

@@ -18,7 +18,7 @@ export function useSearchArticles(debounceMs: number = 300) {
     SEARCH_POSTS,
     {
       fetchPolicy: 'cache-and-network',
-    }
+    },
   );
 
   useEffect(() => {

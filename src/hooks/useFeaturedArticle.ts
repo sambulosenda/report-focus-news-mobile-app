@@ -10,16 +10,13 @@ interface FeaturedPostsResponse {
 }
 
 export function useFeaturedArticle() {
-  const { data, loading, error } = useQuery<FeaturedPostsResponse>(
-    GET_FEATURED_POSTS,
-    {
-      variables: { first: 1 },
-    }
-  );
+  const { data, loading, error } = useQuery<FeaturedPostsResponse>(GET_FEATURED_POSTS, {
+    variables: { first: 1 },
+  });
 
   const article = useMemo<Article | null>(
     () => data?.posts?.nodes?.[0] ?? null,
-    [data?.posts?.nodes]
+    [data?.posts?.nodes],
   );
 
   return {

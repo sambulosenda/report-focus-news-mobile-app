@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  from,
-} from '@apollo/client/core';
+import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client/core';
 import { ApolloProvider } from '@apollo/client/react';
 import { ErrorLink } from '@apollo/client/link/error';
 import { CombinedGraphQLErrors } from '@apollo/client/errors';
@@ -28,7 +23,7 @@ const retryLink = new RetryLink({
   },
   attempts: {
     max: 3,
-    retryIf: (error) => !!error,
+    retryIf: error => !!error,
   },
 });
 

@@ -4,18 +4,12 @@ import { GET_POSTS } from '../graphql/queries';
 import { PostsQueryResponse, Article } from '../types/article';
 
 export function useArticles(first: number = 10) {
-  const { data, loading, error, fetchMore, refetch } = useQuery<PostsQueryResponse>(
-    GET_POSTS,
-    {
-      variables: { first },
-      notifyOnNetworkStatusChange: true,
-    }
-  );
+  const { data, loading, error, fetchMore, refetch } = useQuery<PostsQueryResponse>(GET_POSTS, {
+    variables: { first },
+    notifyOnNetworkStatusChange: true,
+  });
 
-  const articles = useMemo<Article[]>(
-    () => data?.posts?.nodes ?? [],
-    [data?.posts?.nodes]
-  );
+  const articles = useMemo<Article[]>(() => data?.posts?.nodes ?? [], [data?.posts?.nodes]);
 
   const pageInfo = data?.posts?.pageInfo;
 

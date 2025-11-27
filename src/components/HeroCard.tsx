@@ -14,9 +14,7 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
   const router = useRouter();
   const imageUrl = article.featuredImage?.node?.sourceUrl;
   const category = article.categories?.nodes?.[0];
-  const formattedDate = article.date
-    ? format(new Date(article.date), 'MMM d, yyyy')
-    : '';
+  const formattedDate = article.date ? format(new Date(article.date), 'MMM d, yyyy') : '';
 
   const handlePress = () => {
     router.push(`/article/${article.databaseId}` as any);
@@ -46,20 +44,13 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
         <View className="absolute bottom-0 left-0 right-0 p-4">
           {category && (
             <View className="bg-accent/90 self-start px-2 py-1 rounded mb-2">
-              <Text className="text-white text-xs font-semibold uppercase">
-                {category.name}
-              </Text>
+              <Text className="text-white text-xs font-semibold uppercase">{category.name}</Text>
             </View>
           )}
-          <Text
-            className="text-white text-xl font-bold mb-1"
-            numberOfLines={2}
-          >
+          <Text className="text-white text-xl font-bold mb-1" numberOfLines={2}>
             {article.title}
           </Text>
-          <Text className="text-white/70 text-sm">
-            {formattedDate}
-          </Text>
+          <Text className="text-white/70 text-sm">{formattedDate}</Text>
         </View>
       </View>
     </Pressable>
