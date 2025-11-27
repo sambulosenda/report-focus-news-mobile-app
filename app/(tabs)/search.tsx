@@ -1,11 +1,11 @@
 import React, { useCallback } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useSearchArticles } from '../../src/hooks/useSearchArticles';
-import { SearchBar } from '../../src/components/SearchBar';
-import { ArticleCardCompact } from '../../src/components/ArticleCardCompact';
-import { LoadingSpinner } from '../../src/components/LoadingSpinner';
-import { Article } from '../../src/types/article';
+import { useSearchArticles } from '@/src/hooks/useSearchArticles';
+import { SearchBar } from '@/src/components/SearchBar';
+import { ArticleCardCompact } from '@/src/components/ArticleCardCompact';
+import { LoadingSpinner } from '@/src/components/LoadingSpinner';
+import { Article } from '@/src/types/article';
 
 export default function SearchScreen() {
   const { query, setQuery, results, loading, clear, hasSearched } = useSearchArticles();

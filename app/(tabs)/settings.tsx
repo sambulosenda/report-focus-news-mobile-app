@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Switch, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { useThemeStore } from '../../src/stores/themeStore';
+import { useThemeStore } from '@/src/stores/themeStore';
 
 export default function SettingsScreen() {
   const { theme, isSystemTheme, toggleTheme, setSystemTheme } = useThemeStore();

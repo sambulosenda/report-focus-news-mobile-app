@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { useColorScheme } from 'react-native';
-import { useThemeStore } from '../../src/stores/themeStore';
+import { useThemeStore } from '@/src/stores/themeStore';
 
 export default function TabLayout() {
   const { theme, isSystemTheme } = useThemeStore();
