@@ -1,6 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { View, Text, FlatList, RefreshControl } from 'react-native';
+import { View, Text, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Animated, {
+  useSharedValue,
+  useAnimatedScrollHandler,
+} from 'react-native-reanimated';
 import {
   useArticles,
   useFeaturedArticle,
@@ -15,11 +19,19 @@ import {
   ErrorView,
   HeroCardSkeleton,
   ArticleCardSkeleton,
+  CollapsibleHeader,
 } from '@/src/shared/components';
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
 
   const { article: featuredArticle } = useFeaturedArticle();
   const { categories } = useCategories();
@@ -61,12 +73,6 @@ export default function HomeScreen() {
       <View>
         {selectedCategory === null && (
           <>
-            <View className="px-4 pt-2 pb-4">
-              <Text className="text-3xl font-bold text-gray-900 dark:text-white">Report Focus</Text>
-              <Text className="text-base mt-1 text-gray-600 dark:text-gray-400">
-                Stay informed with the latest news
-              </Text>
-            </View>
             {featuredArticle && <HeroCard article={featuredArticle} />}
             <TrendingSection excludeIds={featuredArticle ? [featuredArticle.id] : []} />
           </>
@@ -97,9 +103,9 @@ export default function HomeScreen() {
   if (loading && articles.length === 0) {
     return (
       <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
-        <View className="px-4 pt-2 pb-4">
-          <Text className="text-3xl font-bold text-gray-900 dark:text-white">Report Focus</Text>
-          <Text className="text-base mt-1 text-gray-600 dark:text-gray-400">
+        <View className="bg-white dark:bg-black px-4 h-[72px] justify-center">
+          <Text className="text-[28px] font-bold text-gray-900 dark:text-white">Report Focus</Text>
+          <Text className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
             Stay informed with the latest news
           </Text>
         </View>
@@ -124,6 +130,9 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
+      {/* Collapsible Header */}
+      <CollapsibleHeader scrollY={scrollY} />
+
       {/* Sticky Category Bar */}
       <CategoryChips
         categories={categories}
@@ -131,7 +140,7 @@ export default function HomeScreen() {
         onSelect={setSelectedCategory}
       />
 
-      <FlatList
+      <Animated.FlatList
         data={filteredArticles}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
@@ -140,6 +149,8 @@ export default function HomeScreen() {
         ListEmptyComponent={ListEmpty}
         onEndReached={hasMore ? loadMore : undefined}
         onEndReachedThreshold={0.5}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#007AFF" />
         }
