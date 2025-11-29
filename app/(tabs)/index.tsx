@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { View, Text, FlatList, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useArticles } from '@/src/hooks/useArticles';
-import { useFeaturedArticle } from '@/src/hooks/useFeaturedArticle';
-import { HeroCard } from '@/src/components/HeroCard';
-import { ArticleCard } from '@/src/components/ArticleCard';
-import { LoadingSpinner } from '@/src/components/LoadingSpinner';
-import { ErrorView } from '@/src/components/ErrorView';
-import { Article } from '@/src/types/article';
+import {
+  useArticles,
+  useFeaturedArticle,
+  HeroCard,
+  ArticleCard,
+  type Article,
+} from '@/src/features/articles';
+import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 
 export default function HomeScreen() {
   const { article: featuredArticle } = useFeaturedArticle();

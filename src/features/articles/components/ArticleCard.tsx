@@ -1,24 +1,23 @@
 import { memo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
-import { format } from 'date-fns';
-import { Article } from '../types/article';
-import { stripHtml } from '../utils/html';
+import { navigationService } from '@/src/navigation/routes';
+import { formatArticleDate } from '@/src/shared/formatters/dates';
+import { stripHtml } from '@/src/shared/utils/html';
+import type { Article } from '../types';
 
 interface ArticleCardProps {
   article: Article;
 }
 
 export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardProps) {
-  const router = useRouter();
   const imageUrl = article.featuredImage?.node?.sourceUrl;
   const category = article.categories?.nodes?.[0];
-  const formattedDate = article.date ? format(new Date(article.date), 'MMM d') : '';
+  const formattedDate = formatArticleDate(article.date);
   const excerpt = stripHtml(article.excerpt).slice(0, 100);
 
   const handlePress = () => {
-    router.push(`/article/${article.databaseId}` as any);
+    navigationService.goToArticle(article.databaseId);
   };
 
   return (

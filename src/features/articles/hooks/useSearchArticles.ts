@@ -1,25 +1,17 @@
 import { useLazyQuery } from '@apollo/client/react';
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { SEARCH_POSTS } from '../graphql/queries';
-import { Article } from '../types/article';
-
-interface SearchPostsResponse {
-  posts: {
-    nodes: Article[];
-  };
-}
+import { SEARCH_POSTS } from '../queries';
+import { config } from '@/src/config/env';
+import type { Article, SearchPostsResponse } from '../types';
 
 export function useSearchArticles(debounceMs: number = 300) {
   const [query, setQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [executeSearch, { data, loading, error }] = useLazyQuery<SearchPostsResponse>(
-    SEARCH_POSTS,
-    {
-      fetchPolicy: 'cache-and-network',
-    },
-  );
+  const [executeSearch, { data, loading, error }] = useLazyQuery<SearchPostsResponse>(SEARCH_POSTS, {
+    fetchPolicy: 'cache-and-network',
+  });
 
   useEffect(() => {
     if (timeoutRef.current) {
@@ -40,7 +32,7 @@ export function useSearchArticles(debounceMs: number = 300) {
   useEffect(() => {
     if (debouncedQuery.length >= 2) {
       executeSearch({
-        variables: { search: debouncedQuery, first: 20 },
+        variables: { search: debouncedQuery, first: config.pagination.searchPageSize },
       });
     }
   }, [debouncedQuery, executeSearch]);

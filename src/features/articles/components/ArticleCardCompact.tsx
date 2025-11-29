@@ -1,8 +1,8 @@
 import { memo } from 'react';
 import { View, Text, Pressable } from 'react-native';
-import { useRouter } from 'expo-router';
-import { format } from 'date-fns';
-import { Article } from '../types/article';
+import { navigationService } from '@/src/navigation/routes';
+import { formatArticleDate } from '@/src/shared/formatters/dates';
+import type { Article } from '../types';
 
 interface ArticleCardCompactProps {
   article: Article;
@@ -11,12 +11,11 @@ interface ArticleCardCompactProps {
 export const ArticleCardCompact = memo(function ArticleCardCompact({
   article,
 }: ArticleCardCompactProps) {
-  const router = useRouter();
   const category = article.categories?.nodes?.[0];
-  const formattedDate = article.date ? format(new Date(article.date), 'MMM d') : '';
+  const formattedDate = formatArticleDate(article.date);
 
   const handlePress = () => {
-    router.push(`/article/${article.databaseId}` as any);
+    navigationService.goToArticle(article.databaseId);
   };
 
   return (

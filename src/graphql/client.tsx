@@ -4,14 +4,17 @@ import { ErrorLink } from '@apollo/client/link/error';
 import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { RetryLink } from '@apollo/client/link/retry';
 import { ReactNode } from 'react';
+import { config } from '../config/env';
 
 const errorLink = new ErrorLink(({ error }) => {
-  if (CombinedGraphQLErrors.is(error)) {
-    error.errors.forEach(({ message }) => {
-      console.error(`[GraphQL error]: ${message}`);
-    });
-  } else {
-    console.error(`[Network error]: ${error}`);
+  if (__DEV__) {
+    if (CombinedGraphQLErrors.is(error)) {
+      error.errors.forEach(({ message }) => {
+        console.error(`[GraphQL error]: ${message}`);
+      });
+    } else {
+      console.error(`[Network error]: ${error}`);
+    }
   }
 });
 
@@ -28,7 +31,7 @@ const retryLink = new RetryLink({
 });
 
 const httpLink = new HttpLink({
-  uri: 'https://backend.reportfocusnews.com/graphql',
+  uri: config.api.graphql.uri,
 });
 
 const cache = new InMemoryCache({

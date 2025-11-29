@@ -1,7 +1,7 @@
-import { Tabs } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
+import { NativeTabs, VectorIcon, Icon, Label } from 'expo-router/unstable-native-tabs';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useColorScheme } from 'react-native';
-import { useThemeStore } from '@/src/stores/themeStore';
+import { useThemeStore } from '@/src/features/theme';
 
 export default function TabLayout() {
   const { theme, isSystemTheme } = useThemeStore();
@@ -9,43 +9,26 @@ export default function TabLayout() {
   const isDark = (isSystemTheme ? systemTheme : theme) === 'dark';
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarActiveTintColor: '#007AFF',
-        tabBarInactiveTintColor: '#8E8E93',
-        tabBarStyle: {
-          backgroundColor: isDark ? '#1c1c1e' : '#f2f2f7',
-          borderTopColor: isDark ? '#38383a' : '#e5e5ea',
-        },
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="newspaper-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          title: 'Search',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="search-outline" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: 'Settings',
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
-          ),
-        }}
-      />
-    </Tabs>
+    <NativeTabs
+      iconColor={isDark ? '#ffffff' : '#8E8E93'}
+      tintColor="#007AFF"
+      backgroundColor={isDark ? '#1c1c1e' : '#f2f2f7'}
+      indicatorColor="#007AFF"
+    >
+      <NativeTabs.Trigger name="index">
+        <Icon src={<VectorIcon family={Ionicons as any} name="newspaper-outline" />} />
+        <Label>Home</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="search">
+        <Icon src={<VectorIcon family={Ionicons as any} name="search-outline" />} />
+        <Label>Search</Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="settings">
+        <Icon src={<VectorIcon family={Ionicons as any} name="settings-outline" />} />
+        <Label>Settings</Label>
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }

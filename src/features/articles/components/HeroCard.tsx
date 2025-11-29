@@ -2,22 +2,21 @@ import { memo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useRouter } from 'expo-router';
-import { format } from 'date-fns';
-import { Article } from '../types/article';
+import { navigationService } from '@/src/navigation/routes';
+import { formatArticleDateFull } from '@/src/shared/formatters/dates';
+import type { Article } from '../types';
 
 interface HeroCardProps {
   article: Article;
 }
 
 export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
-  const router = useRouter();
   const imageUrl = article.featuredImage?.node?.sourceUrl;
   const category = article.categories?.nodes?.[0];
-  const formattedDate = article.date ? format(new Date(article.date), 'MMM d, yyyy') : '';
+  const formattedDate = formatArticleDateFull(article.date);
 
   const handlePress = () => {
-    router.push(`/article/${article.databaseId}` as any);
+    navigationService.goToArticle(article.databaseId);
   };
 
   return (

@@ -3,7 +3,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'react-native';
 import { GraphQLProvider } from '@/src/graphql/client';
-import { useThemeStore } from '@/src/stores/themeStore';
+import { useThemeStore } from '@/src/features/theme';
 
 export default function RootLayout() {
   const { theme, isSystemTheme } = useThemeStore();

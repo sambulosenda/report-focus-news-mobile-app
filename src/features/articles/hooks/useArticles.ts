@@ -1,9 +1,10 @@
 import { useQuery } from '@apollo/client/react';
 import { useMemo, useCallback } from 'react';
-import { GET_POSTS } from '../graphql/queries';
-import { PostsQueryResponse, Article } from '../types/article';
+import { GET_POSTS } from '../queries';
+import { config } from '@/src/config/env';
+import type { PostsQueryResponse, Article } from '../types';
 
-export function useArticles(first: number = 10) {
+export function useArticles(first: number = config.pagination.defaultPageSize) {
   const { data, loading, error, fetchMore, refetch } = useQuery<PostsQueryResponse>(GET_POSTS, {
     variables: { first },
     notifyOnNetworkStatusChange: true,

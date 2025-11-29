@@ -14,10 +14,9 @@ import { Image } from 'expo-image';
 import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import RenderHtml from 'react-native-render-html';
-import { GET_POST } from '@/src/graphql/queries';
-import { LoadingSpinner } from '@/src/components/LoadingSpinner';
-import { ErrorView } from '@/src/components/ErrorView';
-import { PostQueryResponse } from '@/src/types/article';
+import { GET_POST } from '@/src/features/articles/queries';
+import { type PostQueryResponse } from '@/src/features/articles';
+import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();

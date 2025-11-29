@@ -1,13 +1,7 @@
 import { useQuery } from '@apollo/client/react';
 import { useMemo } from 'react';
-import { GET_FEATURED_POSTS } from '../graphql/queries';
-import { Article } from '../types/article';
-
-interface FeaturedPostsResponse {
-  posts: {
-    nodes: Article[];
-  };
-}
+import { GET_FEATURED_POSTS } from '../queries';
+import type { Article, FeaturedPostsResponse } from '../types';
 
 export function useFeaturedArticle() {
   const { data, loading, error } = useQuery<FeaturedPostsResponse>(GET_FEATURED_POSTS, {

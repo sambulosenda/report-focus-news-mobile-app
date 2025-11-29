@@ -53,3 +53,15 @@ export interface PostsQueryResponse {
 export interface PostQueryResponse {
   post: Article;
 }
+
+export interface FeaturedPostsResponse {
+  posts: {
+    nodes: Article[];
+  };
+}
+
+export interface SearchPostsResponse {
+  posts: {
+    nodes: Article[];
+  };
+}
