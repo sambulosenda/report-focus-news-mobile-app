@@ -7,6 +7,8 @@ export {
   TrendingGridCard,
   RelatedArticles,
   RelatedArticleCard,
+  ArticleHeader,
+  ParallaxHero,
 } from './components';
 
 // Hooks

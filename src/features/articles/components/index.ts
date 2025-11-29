@@ -5,3 +5,5 @@ export { TrendingSection } from './TrendingSection';
 export { TrendingGridCard } from './TrendingGridCard';
 export { RelatedArticles } from './RelatedArticles';
 export { RelatedArticleCard } from './RelatedArticleCard';
+export { ArticleHeader } from './ArticleHeader';
+export { ParallaxHero } from './ParallaxHero';
