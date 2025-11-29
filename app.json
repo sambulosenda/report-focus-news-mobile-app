@@ -5,11 +5,16 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobileappreportfocus",
+    "scheme": "reportfocus",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sambulosenda.reportfocusnews",
+      "appleTeamId": "Y53KNKBDS8",
+      "entitlements": {
+        "com.apple.security.application-groups": ["group.com.sambulosenda.reportfocusnews.widget"]
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -38,7 +43,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "@bacons/apple-targets"
     ],
     "experiments": {
       "typedRoutes": true,
