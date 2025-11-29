@@ -89,7 +89,7 @@ export default function HomeScreen() {
     [loading],
   );
 
-  if (loading && articles.length === 0 && selectedCategory === null) {
+  if (loading && articles.length === 0) {
     return (
       <SafeAreaView className="flex-1 bg-white dark:bg-black">
         <LoadingSpinner />
