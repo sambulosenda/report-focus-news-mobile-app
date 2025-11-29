@@ -132,3 +132,60 @@ export const SEARCH_POSTS = gql`
     }
   }
 `;
+
+export const GET_TRENDING_POSTS = gql`
+  query GetTrendingPosts($first: Int!, $notIn: [ID]) {
+    posts(
+      first: $first
+      where: { orderby: { field: DATE, order: DESC }, notIn: $notIn }
+    ) {
+      nodes {
+        id
+        databaseId
+        title
+        date
+        slug
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
+        categories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_RELATED_POSTS = gql`
+  query GetRelatedPosts($categoryIn: [ID!], $notIn: [ID], $first: Int!) {
+    posts(first: $first, where: { categoryIn: $categoryIn, notIn: $notIn }) {
+      nodes {
+        id
+        databaseId
+        title
+        date
+        slug
+        featuredImage {
+          node {
+            sourceUrl
+            altText
+          }
+        }
+        categories {
+          nodes {
+            id
+            name
+            slug
+          }
+        }
+      }
+    }
+  }
+`;

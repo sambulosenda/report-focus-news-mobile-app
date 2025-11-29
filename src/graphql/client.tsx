@@ -48,6 +48,9 @@ const cache = new InMemoryCache({
             };
           },
         },
+        categories: {
+          keyArgs: false,
+        },
       },
     },
   },

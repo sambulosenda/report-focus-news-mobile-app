@@ -15,8 +15,9 @@ import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import RenderHtml from 'react-native-render-html';
 import { GET_POST } from '@/src/features/articles/queries';
-import { type PostQueryResponse } from '@/src/features/articles';
+import { type PostQueryResponse, RelatedArticles } from '@/src/features/articles';
 import { LoadingSpinner, ErrorView } from '@/src/shared/components';
+import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -33,6 +34,8 @@ export default function ArticleScreen() {
   const imageUrl = article?.featuredImage?.node?.sourceUrl;
   const category = article?.categories?.nodes?.[0];
   const author = article?.author?.node;
+  const readingTime = getReadingTimeDisplay(article?.content);
+  const categoryIds = article?.categories?.nodes?.map(c => c.id) ?? [];
 
   if (loading) {
     return (
@@ -92,17 +95,18 @@ export default function ArticleScreen() {
           </Text>
 
           {/* Meta */}
-          <View className="flex-row items-center mb-4">
+          <View className="flex-row items-center flex-wrap mb-4">
             {author && (
-              <Text className="text-sm mr-3 text-gray-600 dark:text-gray-400">
+              <Text className="text-sm mr-2 text-gray-600 dark:text-gray-400">
                 By {author.name}
               </Text>
             )}
             {article.date && (
               <Text className="text-sm text-gray-500">
-                {format(new Date(article.date), 'MMMM d, yyyy')}
+                · {format(new Date(article.date), 'MMMM d, yyyy')}
               </Text>
             )}
+            <Text className="text-sm text-gray-500"> · {readingTime}</Text>
           </View>
 
           {/* Content */}
@@ -142,6 +146,9 @@ export default function ArticleScreen() {
             />
           )}
         </View>
+
+        {/* Related Articles */}
+        <RelatedArticles categoryIds={categoryIds} currentArticleId={article.id} />
       </ScrollView>
     </View>
   );

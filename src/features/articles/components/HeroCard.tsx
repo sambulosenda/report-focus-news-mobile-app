@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { navigationService } from '@/src/navigation/routes';
 import { formatArticleDateFull } from '@/src/shared/formatters/dates';
+import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import type { Article } from '../types';
 
 interface HeroCardProps {
@@ -14,6 +15,7 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
   const imageUrl = article.featuredImage?.node?.sourceUrl;
   const category = article.categories?.nodes?.[0];
   const formattedDate = formatArticleDateFull(article.date);
+  const readingTime = getReadingTimeDisplay(article.excerpt);
 
   const handlePress = () => {
     navigationService.goToArticle(article.databaseId);
@@ -49,7 +51,7 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
           <Text className="text-white text-xl font-bold mb-1" numberOfLines={2}>
             {article.title}
           </Text>
-          <Text className="text-white/70 text-sm">{formattedDate}</Text>
+          <Text className="text-white/70 text-sm">{formattedDate} · {readingTime}</Text>
         </View>
       </View>
     </Pressable>
