@@ -4,7 +4,6 @@ import {
   Text,
   useColorScheme,
   useWindowDimensions,
-  LayoutChangeEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
@@ -41,8 +40,8 @@ export default function ArticleScreen() {
     },
   });
 
-  const handleContentLayout = (event: LayoutChangeEvent) => {
-    setContentHeight(event.nativeEvent.layout.height);
+  const handleContentSizeChange = (_width: number, height: number) => {
+    setContentHeight(height);
   };
 
   const { data, loading, error, refetch } = useQuery<PostQueryResponse>(GET_POST, {
@@ -86,7 +85,7 @@ export default function ArticleScreen() {
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 40 }}
-        onLayout={handleContentLayout}
+        onContentSizeChange={handleContentSizeChange}
       >
         {/* Parallax Hero Image */}
         {imageUrl ? (
