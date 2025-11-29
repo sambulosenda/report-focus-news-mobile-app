@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, useColorScheme, Pressable } from 'react-native';
+import { View, Text, Switch, useColorScheme, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeStore } from '@/src/features/theme';
 import { useFollowedTopics, TopicsList } from '@/src/features/topics';
+import { NotificationSettingsPanel } from '@/src/features/notifications';
 
 export default function SettingsScreen() {
   const { theme, isSystemTheme, toggleTheme, setSystemTheme } = useThemeStore();
@@ -19,6 +20,7 @@ export default function SettingsScreen() {
         <Text className="text-3xl font-bold text-gray-900 dark:text-white">Settings</Text>
       </View>
 
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
       <View className="mx-4 rounded-xl overflow-hidden bg-gray-100 dark:bg-neutral-900">
         {/* System Theme Toggle */}
         <View className="flex-row items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-neutral-800">
@@ -88,6 +90,9 @@ export default function SettingsScreen() {
         {topicsExpanded && <TopicsList />}
       </View>
 
+      {/* Notification Settings */}
+      <NotificationSettingsPanel />
+
       {/* App Info */}
       <View className="mx-4 mt-6 rounded-xl overflow-hidden bg-gray-100 dark:bg-neutral-900">
         <View className="flex-row items-center justify-between px-4 py-3">
@@ -105,6 +110,7 @@ export default function SettingsScreen() {
       </View>
 
       <Text className="text-center mt-6 text-sm text-gray-500">Report Focus News</Text>
+      </ScrollView>
     </SafeAreaView>
   );
 }
