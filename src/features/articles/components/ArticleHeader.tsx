@@ -8,7 +8,15 @@ import Animated, {
   interpolate,
   Extrapolation,
   SharedValue,
+  useSharedValue,
+  withSequence,
+  withSpring,
 } from 'react-native-reanimated';
+import {
+  useIsBookmarked,
+  useToggleBookmark,
+  BookmarkedArticle,
+} from '@/src/features/bookmarks';
 
 export interface ArticleHeaderProps {
   scrollY: SharedValue<number>;
@@ -16,6 +24,7 @@ export interface ArticleHeaderProps {
   contentHeight: SharedValue<number>;
   viewportHeight: number;
   articleUrl?: string;
+  article?: BookmarkedArticle;
 }
 
 const HERO_HEIGHT = 300;
@@ -27,8 +36,12 @@ export function ArticleHeader({
   contentHeight,
   viewportHeight,
   articleUrl,
+  article,
 }: ArticleHeaderProps) {
   const router = useRouter();
+  const isBookmarked = useIsBookmarked(article?.id ?? '');
+  const toggleBookmark = useToggleBookmark();
+  const bookmarkScale = useSharedValue(1);
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -49,9 +62,24 @@ export function ArticleHeader({
   };
 
   const handleBookmark = () => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    // TODO: Implement bookmark functionality
+    if (!article) return;
+
+    bookmarkScale.value = withSequence(
+      withSpring(1.3, { damping: 10, stiffness: 400 }),
+      withSpring(1, { damping: 15, stiffness: 400 }),
+    );
+
+    const wasBookmarked = toggleBookmark(article);
+    Haptics.impactAsync(
+      wasBookmarked
+        ? Haptics.ImpactFeedbackStyle.Medium
+        : Haptics.ImpactFeedbackStyle.Light,
+    );
   };
+
+  const bookmarkAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: bookmarkScale.value }],
+  }));
 
   // Progress bar animation
   const progressStyle = useAnimatedStyle(() => {
@@ -140,7 +168,13 @@ export function ArticleHeader({
               onPress={handleBookmark}
               className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
             >
-              <Ionicons name="bookmark-outline" size={20} color={iconColor} />
+              <Animated.View style={bookmarkAnimatedStyle}>
+                <Ionicons
+                  name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+                  size={20}
+                  color={isBookmarked ? '#007AFF' : iconColor}
+                />
+              </Animated.View>
             </Pressable>
           </View>
         </View>

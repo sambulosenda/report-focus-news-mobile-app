@@ -7,6 +7,7 @@ import { stripHtml } from '@/src/shared/utils/html';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { haptics } from '@/src/shared/utils/haptics';
 import { AnimatedPressable } from '@/src/shared/components';
+import { BookmarkButton, createBookmarkableArticle } from '@/src/features/bookmarks';
 import type { Article } from '../types';
 
 interface ArticleCardProps {
@@ -24,6 +25,8 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
     haptics.light();
     navigationService.goToArticle(article.databaseId);
   };
+
+  const bookmarkableArticle = createBookmarkableArticle(article);
 
   return (
     <AnimatedPressable
@@ -43,7 +46,15 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
             {excerpt}
           </Text>
         )}
-        <Text className="text-gray-500 dark:text-gray-500 text-xs">{formattedDate} · {readingTime}</Text>
+        <View className="flex-row items-center justify-between">
+          <Text className="text-gray-500 dark:text-gray-500 text-xs">{formattedDate} · {readingTime}</Text>
+          <BookmarkButton
+            article={bookmarkableArticle}
+            size={18}
+            color="#9ca3af"
+            activeColor="#007AFF"
+          />
+        </View>
       </View>
       {imageUrl && (
         <View className="w-24 h-24 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800">
