@@ -6,7 +6,6 @@ import Animated, {
   useAnimatedScrollHandler,
 } from 'react-native-reanimated';
 import {
-  useArticles,
   useFeaturedArticle,
   HeroCard,
   ArticleCard,
@@ -14,6 +13,7 @@ import {
   type Article,
 } from '@/src/features/articles';
 import { CategoryChips, useCategories, useCategoryArticles } from '@/src/features/categories';
+import { usePersonalizedFeed } from '@/src/features/topics';
 import {
   LoadingSpinner,
   ErrorView,
@@ -37,7 +37,7 @@ export default function HomeScreen() {
   const { categories } = useCategories();
 
   // Use different hooks based on category selection
-  const allArticles = useArticles(15);
+  const allArticles = usePersonalizedFeed(15);
   const categoryArticles = useCategoryArticles(selectedCategory);
 
   // Choose which data source to use

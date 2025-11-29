@@ -1,11 +1,14 @@
-import React from 'react';
-import { View, Text, Switch, useColorScheme } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Switch, useColorScheme, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeStore } from '@/src/features/theme';
+import { useFollowedTopics, TopicsList } from '@/src/features/topics';
 
 export default function SettingsScreen() {
   const { theme, isSystemTheme, toggleTheme, setSystemTheme } = useThemeStore();
+  const { count: topicsCount } = useFollowedTopics();
+  const [topicsExpanded, setTopicsExpanded] = useState(false);
   const systemTheme = useColorScheme();
   const activeTheme = isSystemTheme ? systemTheme : theme;
   const isDark = activeTheme === 'dark';
@@ -53,6 +56,36 @@ export default function SettingsScreen() {
             trackColor={{ false: '#E5E5EA', true: '#007AFF' }}
           />
         </View>
+      </View>
+
+      {/* Followed Topics */}
+      <View className="mx-4 mt-6 rounded-xl overflow-hidden bg-gray-100 dark:bg-neutral-900">
+        <Pressable
+          onPress={() => setTopicsExpanded(!topicsExpanded)}
+          className="flex-row items-center justify-between px-4 py-3">
+          <View className="flex-row items-center">
+            <Ionicons
+              name="heart-outline"
+              size={22}
+              color={isDark ? '#fff' : '#000'}
+              style={{ marginRight: 12 }}
+            />
+            <Text className="text-base text-gray-900 dark:text-white">Followed Topics</Text>
+          </View>
+          <View className="flex-row items-center">
+            {topicsCount > 0 && (
+              <View className="bg-accent px-2 py-0.5 rounded-full mr-2">
+                <Text className="text-white text-xs font-semibold">{topicsCount}</Text>
+              </View>
+            )}
+            <Ionicons
+              name={topicsExpanded ? 'chevron-up' : 'chevron-down'}
+              size={20}
+              color={isDark ? '#666' : '#999'}
+            />
+          </View>
+        </Pressable>
+        {topicsExpanded && <TopicsList />}
       </View>
 
       {/* App Info */}
