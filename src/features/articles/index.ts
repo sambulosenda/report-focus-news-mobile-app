@@ -1,8 +1,22 @@
 // Components
-export { ArticleCard, ArticleCardCompact, HeroCard } from './components';
+export {
+  ArticleCard,
+  ArticleCardCompact,
+  HeroCard,
+  TrendingSection,
+  TrendingGridCard,
+  RelatedArticles,
+  RelatedArticleCard,
+} from './components';
 
 // Hooks
-export { useArticles, useFeaturedArticle, useSearchArticles } from './hooks';
+export {
+  useArticles,
+  useFeaturedArticle,
+  useSearchArticles,
+  useTrendingArticles,
+  useRelatedArticles,
+} from './hooks';
 
 // Types
 export type {
@@ -14,6 +28,8 @@ export type {
   PostsConnection,
   PostsQueryResponse,
   PostQueryResponse,
+  TrendingPostsResponse,
+  RelatedPostsResponse,
 } from './types';
 
 // Services

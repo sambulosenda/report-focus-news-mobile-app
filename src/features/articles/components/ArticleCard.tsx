@@ -4,6 +4,7 @@ import { Image } from 'expo-image';
 import { navigationService } from '@/src/navigation/routes';
 import { formatArticleDate } from '@/src/shared/formatters/dates';
 import { stripHtml } from '@/src/shared/utils/html';
+import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import type { Article } from '../types';
 
 interface ArticleCardProps {
@@ -14,6 +15,7 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
   const imageUrl = article.featuredImage?.node?.sourceUrl;
   const category = article.categories?.nodes?.[0];
   const formattedDate = formatArticleDate(article.date);
+  const readingTime = getReadingTimeDisplay(article.excerpt);
   const excerpt = stripHtml(article.excerpt).slice(0, 100);
 
   const handlePress = () => {
@@ -38,7 +40,7 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
             {excerpt}
           </Text>
         )}
-        <Text className="text-gray-500 dark:text-gray-500 text-xs">{formattedDate}</Text>
+        <Text className="text-gray-500 dark:text-gray-500 text-xs">{formattedDate} · {readingTime}</Text>
       </View>
       {imageUrl && (
         <View className="w-24 h-24 rounded-lg overflow-hidden bg-gray-200 dark:bg-gray-800">

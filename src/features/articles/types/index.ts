@@ -65,3 +65,15 @@ export interface SearchPostsResponse {
     nodes: Article[];
   };
 }
+
+export interface TrendingPostsResponse {
+  posts: {
+    nodes: Article[];
+  };
+}
+
+export interface RelatedPostsResponse {
+  posts: {
+    nodes: Article[];
+  };
+}
