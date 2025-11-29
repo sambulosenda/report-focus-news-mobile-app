@@ -23,7 +23,7 @@ import {
 } from '@/src/features/articles';
 import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
-import type { BookmarkedArticle } from '@/src/features/bookmarks';
+import { createBookmarkableArticle } from '@/src/features/bookmarks';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -56,20 +56,8 @@ export default function ArticleScreen() {
   const categoryIds = article?.categories?.nodes?.map(c => c.id) ?? [];
 
   // Prepare article data for bookmarking
-  const bookmarkableArticle: BookmarkedArticle | undefined = article
-    ? {
-        id: article.id,
-        databaseId: article.databaseId,
-        title: article.title,
-        excerpt: article.excerpt,
-        content: article.content ?? '',
-        date: article.date,
-        slug: article.slug,
-        imageUrl,
-        categoryName: category?.name,
-        authorName: author?.name,
-        bookmarkedAt: '',
-      }
+  const bookmarkableArticle = article
+    ? createBookmarkableArticle(article)
     : undefined;
 
   if (loading) {

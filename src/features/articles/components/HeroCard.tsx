@@ -7,7 +7,7 @@ import { formatArticleDateFull } from '@/src/shared/formatters/dates';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { haptics } from '@/src/shared/utils/haptics';
 import { AnimatedPressable } from '@/src/shared/components';
-import { BookmarkButton } from '@/src/features/bookmarks';
+import { BookmarkButton, createBookmarkableArticle } from '@/src/features/bookmarks';
 import type { Article } from '../types';
 
 interface HeroCardProps {
@@ -25,19 +25,7 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
     navigationService.goToArticle(article.databaseId);
   };
 
-  const bookmarkableArticle = {
-    id: article.id,
-    databaseId: article.databaseId,
-    title: article.title,
-    excerpt: article.excerpt,
-    content: article.content ?? '',
-    date: article.date,
-    slug: article.slug,
-    imageUrl,
-    categoryName: category?.name,
-    authorName: article.author?.node?.name,
-    bookmarkedAt: '',
-  };
+  const bookmarkableArticle = createBookmarkableArticle(article);
 
   return (
     <AnimatedPressable onPress={handlePress} className="mx-4 mb-4" scale={0.98}>

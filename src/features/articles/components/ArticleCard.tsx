@@ -7,7 +7,7 @@ import { stripHtml } from '@/src/shared/utils/html';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { haptics } from '@/src/shared/utils/haptics';
 import { AnimatedPressable } from '@/src/shared/components';
-import { BookmarkButton } from '@/src/features/bookmarks';
+import { BookmarkButton, createBookmarkableArticle } from '@/src/features/bookmarks';
 import type { Article } from '../types';
 
 interface ArticleCardProps {
@@ -26,19 +26,7 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
     navigationService.goToArticle(article.databaseId);
   };
 
-  const bookmarkableArticle = {
-    id: article.id,
-    databaseId: article.databaseId,
-    title: article.title,
-    excerpt: article.excerpt,
-    content: article.content ?? '',
-    date: article.date,
-    slug: article.slug,
-    imageUrl,
-    categoryName: category?.name,
-    authorName: article.author?.node?.name,
-    bookmarkedAt: '',
-  };
+  const bookmarkableArticle = createBookmarkableArticle(article);
 
   return (
     <AnimatedPressable
