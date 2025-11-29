@@ -1,6 +1,8 @@
 import { memo } from 'react';
 import { ScrollView, Pressable, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { haptics } from '@/src/shared/utils/haptics';
+import { useIsFollowing, useToggleFollow } from '@/src/features/topics';
 import type { CategoryItem } from '../types';
 
 interface CategoryChipsProps {
@@ -8,6 +10,57 @@ interface CategoryChipsProps {
   selectedId: number | null;
   onSelect: (id: number | null) => void;
 }
+
+interface CategoryChipProps {
+  category: CategoryItem;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+const CategoryChip = memo(function CategoryChip({
+  category,
+  isSelected,
+  onSelect,
+}: CategoryChipProps) {
+  const isFollowing = useIsFollowing(category.id);
+  const toggleFollow = useToggleFollow();
+
+  const handleLongPress = () => {
+    haptics.medium();
+    toggleFollow({
+      id: category.id,
+      databaseId: category.databaseId,
+      name: category.name,
+      slug: category.slug,
+    });
+  };
+
+  return (
+    <Pressable
+      onPress={onSelect}
+      onLongPress={handleLongPress}
+      className={`flex-row items-center px-4 py-2 rounded-full ${
+        isSelected ? 'bg-accent' : 'bg-gray-100 dark:bg-gray-800'
+      }`}>
+      {isFollowing && (
+        <Ionicons
+          name="heart"
+          size={14}
+          color={isSelected ? '#fff' : '#007AFF'}
+          style={{ marginRight: 4 }}
+        />
+      )}
+      <Text
+        className={
+          isSelected
+            ? 'text-white font-semibold'
+            : 'text-gray-700 dark:text-gray-300'
+        }>
+        {category.name}
+      </Text>
+    </Pressable>
+  );
+});
 
 export const CategoryChips = memo(function CategoryChips({
   categories,
@@ -38,24 +91,15 @@ export const CategoryChips = memo(function CategoryChips({
           </Text>
         </Pressable>
         {categories.map(cat => (
-          <Pressable
+          <CategoryChip
             key={cat.id}
-            onPress={() => {
+            category={cat}
+            isSelected={selectedId === cat.databaseId}
+            onSelect={() => {
               haptics.selection();
               onSelect(cat.databaseId);
             }}
-            className={`px-4 py-2 rounded-full ${
-              selectedId === cat.databaseId ? 'bg-accent' : 'bg-gray-100 dark:bg-gray-800'
-            }`}>
-            <Text
-              className={
-                selectedId === cat.databaseId
-                  ? 'text-white font-semibold'
-                  : 'text-gray-700 dark:text-gray-300'
-              }>
-              {cat.name}
-            </Text>
-          </Pressable>
+          />
         ))}
       </ScrollView>
     </View>
