@@ -10,7 +10,12 @@ import {
   type Article,
 } from '@/src/features/articles';
 import { CategoryChips, useCategories, useCategoryArticles } from '@/src/features/categories';
-import { LoadingSpinner, ErrorView } from '@/src/shared/components';
+import {
+  LoadingSpinner,
+  ErrorView,
+  HeroCardSkeleton,
+  ArticleCardSkeleton,
+} from '@/src/shared/components';
 
 export default function HomeScreen() {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -91,8 +96,20 @@ export default function HomeScreen() {
 
   if (loading && articles.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-white dark:bg-black">
-        <LoadingSpinner />
+      <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
+        <View className="px-4 pt-2 pb-4">
+          <Text className="text-3xl font-bold text-gray-900 dark:text-white">Report Focus</Text>
+          <Text className="text-base mt-1 text-gray-600 dark:text-gray-400">
+            Stay informed with the latest news
+          </Text>
+        </View>
+        <HeroCardSkeleton />
+        <Text className="text-lg font-semibold px-4 py-3 text-gray-900 dark:text-white">
+          Latest Articles
+        </Text>
+        {[1, 2, 3, 4].map(i => (
+          <ArticleCardSkeleton key={i} />
+        ))}
       </SafeAreaView>
     );
   }

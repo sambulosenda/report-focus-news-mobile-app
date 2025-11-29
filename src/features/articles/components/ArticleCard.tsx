@@ -1,10 +1,12 @@
 import { memo } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { navigationService } from '@/src/navigation/routes';
 import { formatArticleDate } from '@/src/shared/formatters/dates';
 import { stripHtml } from '@/src/shared/utils/html';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
+import { haptics } from '@/src/shared/utils/haptics';
+import { AnimatedPressable } from '@/src/shared/components';
 import type { Article } from '../types';
 
 interface ArticleCardProps {
@@ -19,13 +21,14 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
   const excerpt = stripHtml(article.excerpt).slice(0, 100);
 
   const handlePress = () => {
+    haptics.light();
     navigationService.goToArticle(article.databaseId);
   };
 
   return (
-    <Pressable
+    <AnimatedPressable
       onPress={handlePress}
-      className="flex-row mx-4 mb-3 p-3 bg-white dark:bg-gray-900 rounded-xl active:opacity-80">
+      className="flex-row mx-4 mb-3 p-3 bg-white dark:bg-gray-900 rounded-xl">
       <View className="flex-1 pr-3">
         {category && (
           <Text className="text-accent text-xs font-semibold uppercase mb-1">{category.name}</Text>
@@ -52,6 +55,6 @@ export const ArticleCard = memo(function ArticleCard({ article }: ArticleCardPro
           />
         </View>
       )}
-    </Pressable>
+    </AnimatedPressable>
   );
 });

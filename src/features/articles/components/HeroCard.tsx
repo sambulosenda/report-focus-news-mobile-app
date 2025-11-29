@@ -1,10 +1,12 @@
 import { memo } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { navigationService } from '@/src/navigation/routes';
 import { formatArticleDateFull } from '@/src/shared/formatters/dates';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
+import { haptics } from '@/src/shared/utils/haptics';
+import { AnimatedPressable } from '@/src/shared/components';
 import type { Article } from '../types';
 
 interface HeroCardProps {
@@ -18,11 +20,12 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
   const readingTime = getReadingTimeDisplay(article.excerpt);
 
   const handlePress = () => {
+    haptics.light();
     navigationService.goToArticle(article.databaseId);
   };
 
   return (
-    <Pressable onPress={handlePress} className="mx-4 mb-4">
+    <AnimatedPressable onPress={handlePress} className="mx-4 mb-4" scale={0.98}>
       <View className="h-72 rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-800">
         {imageUrl && (
           <Image
@@ -54,6 +57,6 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
           <Text className="text-white/70 text-sm">{formattedDate} · {readingTime}</Text>
         </View>
       </View>
-    </Pressable>
+    </AnimatedPressable>
   );
 });

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSearchArticles, ArticleCardCompact, type Article } from '@/src/features/articles';
-import { SearchBar, LoadingSpinner } from '@/src/shared/components';
+import { SearchBar, SearchResultSkeleton } from '@/src/shared/components';
 
 export default function SearchScreen() {
   const { query, setQuery, results, loading, clear, hasSearched } = useSearchArticles();
@@ -53,7 +53,11 @@ export default function SearchScreen() {
       <SearchBar value={query} onChangeText={setQuery} onClear={clear} />
 
       {loading && hasSearched ? (
-        <LoadingSpinner />
+        <View>
+          {[1, 2, 3, 4, 5].map(i => (
+            <SearchResultSkeleton key={i} />
+          ))}
+        </View>
       ) : (
         <FlatList
           data={results}

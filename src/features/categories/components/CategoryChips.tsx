@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { ScrollView, Pressable, Text, View } from 'react-native';
+import { haptics } from '@/src/shared/utils/haptics';
 import type { CategoryItem } from '../types';
 
 interface CategoryChipsProps {
@@ -20,7 +21,10 @@ export const CategoryChips = memo(function CategoryChips({
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
         <Pressable
-          onPress={() => onSelect(null)}
+          onPress={() => {
+            haptics.selection();
+            onSelect(null);
+          }}
           className={`px-4 py-2 rounded-full ${
             selectedId === null ? 'bg-accent' : 'bg-gray-100 dark:bg-gray-800'
           }`}>
@@ -36,7 +40,10 @@ export const CategoryChips = memo(function CategoryChips({
         {categories.map(cat => (
           <Pressable
             key={cat.id}
-            onPress={() => onSelect(cat.databaseId)}
+            onPress={() => {
+              haptics.selection();
+              onSelect(cat.databaseId);
+            }}
             className={`px-4 py-2 rounded-full ${
               selectedId === cat.databaseId ? 'bg-accent' : 'bg-gray-100 dark:bg-gray-800'
             }`}>

@@ -1,7 +1,9 @@
 import { memo } from 'react';
-import { View, Text, Pressable, useWindowDimensions } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import { Image } from 'expo-image';
 import { navigationService } from '@/src/navigation/routes';
+import { haptics } from '@/src/shared/utils/haptics';
+import { AnimatedPressable } from '@/src/shared/components';
 import type { Article } from '../types';
 
 interface TrendingGridCardProps {
@@ -16,11 +18,16 @@ export const TrendingGridCard = memo(function TrendingGridCard({
   const imageUrl = article.featuredImage?.node?.sourceUrl;
   const category = article.categories?.nodes?.[0];
 
+  const handlePress = () => {
+    haptics.light();
+    navigationService.goToArticle(article.databaseId);
+  };
+
   return (
-    <Pressable
-      onPress={() => navigationService.goToArticle(article.databaseId)}
+    <AnimatedPressable
+      onPress={handlePress}
       style={{ width: cardWidth }}
-      className="mb-4 active:opacity-80">
+      className="mb-4">
       <View className="rounded-xl overflow-hidden bg-gray-200 dark:bg-gray-800 aspect-[4/3]">
         {imageUrl && (
           <Image
@@ -41,6 +48,6 @@ export const TrendingGridCard = memo(function TrendingGridCard({
         numberOfLines={2}>
         {article.title}
       </Text>
-    </Pressable>
+    </AnimatedPressable>
   );
 });

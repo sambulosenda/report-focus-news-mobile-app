@@ -19,6 +19,9 @@ export default function RootLayout() {
           name="article/[id]"
           options={{
             presentation: 'card',
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
           }}
         />
       </Stack>

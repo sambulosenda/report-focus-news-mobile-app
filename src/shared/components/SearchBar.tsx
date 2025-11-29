@@ -1,5 +1,6 @@
 import { View, TextInput, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { haptics } from '@/src/shared/utils/haptics';
 
 interface SearchBarProps {
   value: string;
@@ -28,7 +29,12 @@ export function SearchBar({
         returnKeyType="search"
       />
       {value.length > 0 && (
-        <Pressable onPress={onClear} hitSlop={8}>
+        <Pressable
+          onPress={() => {
+            haptics.light();
+            onClear();
+          }}
+          hitSlop={8}>
           <Ionicons name="close-circle" size={20} color="#8E8E93" />
         </Pressable>
       )}
