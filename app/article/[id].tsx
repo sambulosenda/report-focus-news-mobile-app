@@ -23,6 +23,7 @@ import {
 } from '@/src/features/articles';
 import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
+import type { BookmarkedArticle } from '@/src/features/bookmarks';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -54,6 +55,23 @@ export default function ArticleScreen() {
   const readingTime = getReadingTimeDisplay(article?.content);
   const categoryIds = article?.categories?.nodes?.map(c => c.id) ?? [];
 
+  // Prepare article data for bookmarking
+  const bookmarkableArticle: BookmarkedArticle | undefined = article
+    ? {
+        id: article.id,
+        databaseId: article.databaseId,
+        title: article.title,
+        excerpt: article.excerpt,
+        content: article.content ?? '',
+        date: article.date,
+        slug: article.slug,
+        imageUrl,
+        categoryName: category?.name,
+        authorName: author?.name,
+        bookmarkedAt: '',
+      }
+    : undefined;
+
   if (loading) {
     return (
       <SafeAreaView className="flex-1 bg-white dark:bg-black">
@@ -79,6 +97,7 @@ export default function ArticleScreen() {
         contentHeight={contentHeight}
         viewportHeight={viewportHeight}
         articleUrl={`https://reportfocus.com/${article.slug}`}
+        article={bookmarkableArticle}
       />
 
       <Animated.ScrollView

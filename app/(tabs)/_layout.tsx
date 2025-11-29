@@ -25,6 +25,11 @@ export default function TabLayout() {
         <Label>Search</Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="bookmarks">
+        <Icon src={<VectorIcon family={Ionicons as any} name="bookmark-outline" />} />
+        <Label>Saved</Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="settings">
         <Icon src={<VectorIcon family={Ionicons as any} name="settings-outline" />} />
         <Label>Settings</Label>

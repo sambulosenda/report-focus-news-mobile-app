@@ -7,6 +7,7 @@ import { formatArticleDateFull } from '@/src/shared/formatters/dates';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { haptics } from '@/src/shared/utils/haptics';
 import { AnimatedPressable } from '@/src/shared/components';
+import { BookmarkButton } from '@/src/features/bookmarks';
 import type { Article } from '../types';
 
 interface HeroCardProps {
@@ -22,6 +23,20 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
   const handlePress = () => {
     haptics.light();
     navigationService.goToArticle(article.databaseId);
+  };
+
+  const bookmarkableArticle = {
+    id: article.id,
+    databaseId: article.databaseId,
+    title: article.title,
+    excerpt: article.excerpt,
+    content: article.content ?? '',
+    date: article.date,
+    slug: article.slug,
+    imageUrl,
+    categoryName: category?.name,
+    authorName: article.author?.node?.name,
+    bookmarkedAt: '',
   };
 
   return (
@@ -45,6 +60,15 @@ export const HeroCard = memo(function HeroCard({ article }: HeroCardProps) {
             height: '60%',
           }}
         />
+        {/* Bookmark button */}
+        <View className="absolute top-3 right-3 w-9 h-9 items-center justify-center rounded-full bg-black/30">
+          <BookmarkButton
+            article={bookmarkableArticle}
+            size={20}
+            color="#fff"
+            activeColor="#007AFF"
+          />
+        </View>
         <View className="absolute bottom-0 left-0 right-0 p-4">
           {category && (
             <View className="bg-accent/90 self-start px-2 py-1 rounded mb-2">
