@@ -1,14 +1,21 @@
 import '../global.css';
+import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'react-native';
 import { GraphQLProvider } from '@/src/graphql/client';
 import { useThemeStore } from '@/src/features/theme';
+import { useNotifications } from '@/src/features/notifications';
 
 export default function RootLayout() {
   const { theme, isSystemTheme } = useThemeStore();
   const systemTheme = useColorScheme();
   const activeTheme = isSystemTheme ? systemTheme : theme;
+  const { initialize } = useNotifications();
+
+  useEffect(() => {
+    initialize();
+  }, [initialize]);
 
   return (
     <GraphQLProvider>

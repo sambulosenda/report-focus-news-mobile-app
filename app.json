@@ -47,6 +47,12 @@
           }
         }
       ],
+      [
+        "expo-notifications",
+        {
+          "color": "#007AFF"
+        }
+      ],
       "@bacons/apple-targets"
     ],
     "experiments": {

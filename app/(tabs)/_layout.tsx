@@ -30,6 +30,11 @@ export default function TabLayout() {
         <Label>Saved</Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="notifications">
+        <Icon src={<VectorIcon family={Ionicons as any} name="notifications-outline" />} />
+        <Label>Alerts</Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="settings">
         <Icon src={<VectorIcon family={Ionicons as any} name="settings-outline" />} />
         <Label>Settings</Label>
