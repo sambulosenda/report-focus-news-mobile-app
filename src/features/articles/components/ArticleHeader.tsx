@@ -1,5 +1,4 @@
-import React from 'react';
-import { View, Pressable, useColorScheme } from 'react-native';
+import { View, Pressable, Share } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -10,21 +9,26 @@ import Animated, {
   Extrapolation,
   SharedValue,
 } from 'react-native-reanimated';
-import { Share } from 'react-native';
 
-interface ArticleHeaderProps {
+export interface ArticleHeaderProps {
   scrollY: SharedValue<number>;
   title: string;
-  contentHeight: number;
+  contentHeight: SharedValue<number>;
+  viewportHeight: number;
+  articleUrl?: string;
 }
 
 const HERO_HEIGHT = 300;
 const TITLE_APPEAR_THRESHOLD = HERO_HEIGHT - 100;
 
-export function ArticleHeader({ scrollY, title, contentHeight }: ArticleHeaderProps) {
+export function ArticleHeader({
+  scrollY,
+  title,
+  contentHeight,
+  viewportHeight,
+  articleUrl,
+}: ArticleHeaderProps) {
   const router = useRouter();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -36,9 +40,11 @@ export function ArticleHeader({ scrollY, title, contentHeight }: ArticleHeaderPr
     try {
       await Share.share({
         message: title,
+        url: articleUrl,
+        title: title,
       });
-    } catch {
-      // Ignore share errors
+    } catch (error) {
+      console.warn('Share failed:', error);
     }
   };
 
@@ -49,9 +55,10 @@ export function ArticleHeader({ scrollY, title, contentHeight }: ArticleHeaderPr
 
   // Progress bar animation
   const progressStyle = useAnimatedStyle(() => {
+    const maxScroll = Math.max(0, contentHeight.value - viewportHeight);
     const progress = interpolate(
       scrollY.value,
-      [0, contentHeight],
+      [0, maxScroll],
       [0, 100],
       Extrapolation.CLAMP,
     );
@@ -82,6 +89,10 @@ export function ArticleHeader({ scrollY, title, contentHeight }: ArticleHeaderPr
     return { opacity };
   });
 
+  // Icon color - white works on both hero (dark gradient) and dark mode header
+  // In light mode with scrolled header, buttons have bg-black/20 so white still visible
+  const iconColor = '#fff';
+
   return (
     <View className="absolute top-0 left-0 right-0 z-10">
       {/* Progress bar */}
@@ -105,7 +116,7 @@ export function ArticleHeader({ scrollY, title, contentHeight }: ArticleHeaderPr
             onPress={handleBack}
             className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
           >
-            <Ionicons name="arrow-back" size={22} color="#fff" />
+            <Ionicons name="arrow-back" size={22} color={iconColor} />
           </Pressable>
 
           {/* Animated title */}
@@ -123,13 +134,13 @@ export function ArticleHeader({ scrollY, title, contentHeight }: ArticleHeaderPr
               onPress={handleShare}
               className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
             >
-              <Ionicons name="share-outline" size={20} color="#fff" />
+              <Ionicons name="share-outline" size={20} color={iconColor} />
             </Pressable>
             <Pressable
               onPress={handleBookmark}
               className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
             >
-              <Ionicons name="bookmark-outline" size={20} color="#fff" />
+              <Ionicons name="bookmark-outline" size={20} color={iconColor} />
             </Pressable>
           </View>
         </View>

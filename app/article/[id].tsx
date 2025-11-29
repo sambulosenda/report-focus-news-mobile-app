@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -27,12 +26,12 @@ import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { width } = useWindowDimensions();
+  const { width, height: viewportHeight } = useWindowDimensions();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
 
   const scrollY = useSharedValue(0);
-  const [contentHeight, setContentHeight] = useState(1000);
+  const contentHeight = useSharedValue(1000);
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -41,7 +40,7 @@ export default function ArticleScreen() {
   });
 
   const handleContentSizeChange = (_width: number, height: number) => {
-    setContentHeight(height);
+    contentHeight.value = height;
   };
 
   const { data, loading, error, refetch } = useQuery<PostQueryResponse>(GET_POST, {
@@ -78,6 +77,8 @@ export default function ArticleScreen() {
         scrollY={scrollY}
         title={article.title}
         contentHeight={contentHeight}
+        viewportHeight={viewportHeight}
+        articleUrl={`https://reportfocus.com/${article.slug}`}
       />
 
       <Animated.ScrollView

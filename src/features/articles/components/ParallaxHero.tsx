@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +8,7 @@ import Animated, {
   SharedValue,
 } from 'react-native-reanimated';
 
-interface ParallaxHeroProps {
+export interface ParallaxHeroProps {
   imageUrl: string;
   scrollY: SharedValue<number>;
 }
