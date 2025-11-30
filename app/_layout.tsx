@@ -42,6 +42,15 @@ export default function RootLayout() {
             gestureDirection: 'horizontal',
           }}
         />
+        <Stack.Screen
+          name="video/[id]"
+          options={{
+            presentation: 'card',
+            animation: 'slide_from_right',
+            gestureEnabled: true,
+            gestureDirection: 'horizontal',
+          }}
+        />
       </Stack>
     </GraphQLProvider>
   );
