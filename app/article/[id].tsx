@@ -1,7 +1,6 @@
 import {
   View,
   Text,
-  useColorScheme,
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,13 +24,13 @@ import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { createBookmarkableArticle } from '@/src/features/bookmarks';
 import { useSettingsStore, FONT_SIZE_CONFIG } from '@/src/features/settings';
+import { useEffectiveTheme } from '@/src/features/theme';
 import type { ShareableArticle } from '@/src/features/sharing';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { width, height: viewportHeight } = useWindowDimensions();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const { isDark } = useEffectiveTheme();
   const { fontSize } = useSettingsStore();
   const fontConfig = FONT_SIZE_CONFIG[fontSize];
 

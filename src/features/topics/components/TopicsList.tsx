@@ -1,12 +1,12 @@
-import { View, Text, Pressable, useColorScheme } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFollowedTopics } from '../hooks/useFollowedTopics';
+import { useEffectiveTheme } from '@/src/features/theme';
 import { haptics } from '@/src/shared/utils/haptics';
 
 export function TopicsList() {
   const { followedTopics, unfollowTopic, count } = useFollowedTopics();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const { isDark } = useEffectiveTheme();
 
   const handleUnfollow = (id: string) => {
     haptics.light();
