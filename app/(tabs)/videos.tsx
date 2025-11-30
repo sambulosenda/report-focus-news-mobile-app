@@ -10,8 +10,13 @@ export default function VideosScreen() {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await refetch();
-    setRefreshing(false);
+    try {
+      await refetch();
+    } catch (err) {
+      console.error('Failed to refresh videos:', err);
+    } finally {
+      setRefreshing(false);
+    }
   }, [refetch]);
 
   const renderItem = useCallback(
