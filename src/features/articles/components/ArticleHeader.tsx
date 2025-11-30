@@ -1,4 +1,5 @@
-import { View, Pressable, Share } from 'react-native';
+import { useState } from 'react';
+import { View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,6 +18,7 @@ import {
   useToggleBookmark,
   BookmarkedArticle,
 } from '@/src/features/bookmarks';
+import { ShareModal, type ShareableArticle } from '@/src/features/sharing';
 
 export interface ArticleHeaderProps {
   scrollY: SharedValue<number>;
@@ -25,6 +27,7 @@ export interface ArticleHeaderProps {
   viewportHeight: number;
   articleUrl?: string;
   article?: BookmarkedArticle;
+  shareableArticle?: ShareableArticle;
 }
 
 const HERO_HEIGHT = 300;
@@ -37,28 +40,22 @@ export function ArticleHeader({
   viewportHeight,
   articleUrl,
   article,
+  shareableArticle,
 }: ArticleHeaderProps) {
   const router = useRouter();
   const isBookmarked = useIsBookmarked(article?.id ?? '');
   const toggleBookmark = useToggleBookmark();
   const bookmarkScale = useSharedValue(1);
+  const [showShareModal, setShowShareModal] = useState(false);
 
   const handleBack = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     router.back();
   };
 
-  const handleShare = async () => {
+  const handleShare = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    try {
-      await Share.share({
-        message: title,
-        url: articleUrl,
-        title: title,
-      });
-    } catch (error) {
-      console.warn('Share failed:', error);
-    }
+    setShowShareModal(true);
   };
 
   const handleBookmark = () => {
@@ -179,6 +176,15 @@ export function ArticleHeader({
           </View>
         </View>
       </SafeAreaView>
+
+      {/* Share Modal */}
+      {shareableArticle && (
+        <ShareModal
+          visible={showShareModal}
+          onClose={() => setShowShareModal(false)}
+          article={shareableArticle}
+        />
+      )}
     </View>
   );
 }
