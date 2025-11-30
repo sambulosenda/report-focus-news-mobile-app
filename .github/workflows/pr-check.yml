@@ -49,10 +49,26 @@ jobs:
             const fs = require('fs');
             const result = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/result.json', 'utf8'));
 
+            let links = '';
+            if (result.jobs && Array.isArray(result.jobs)) {
+              result.jobs.forEach(job => {
+                if (job.type === 'build' && job.outputs?.buildId) {
+                  const platform = job.params?.platform || 'unknown';
+                  links += `- [${platform} Build](https://expo.dev/builds/${job.outputs.buildId})\n`;
+                }
+                if (job.type === 'update' && job.outputs?.updateGroupId) {
+                  const platform = job.params?.platform || 'unknown';
+                  links += `- [${platform} Update](https://expo.dev/updates/${job.outputs.updateGroupId})\n`;
+                }
+              });
+            }
+
             let body = '## EAS Preview Ready\n\n';
             body += 'Your preview build/update is ready for testing.\n\n';
             body += `Workflow status: **${result.status}**\n\n`;
-            body += `[View workflow on Expo](https://expo.dev)\n`;
+            if (links) {
+              body += '**Build/Update Links:**\n' + links + '\n';
+            }
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
