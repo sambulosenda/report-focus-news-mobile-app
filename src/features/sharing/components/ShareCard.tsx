@@ -1,8 +1,8 @@
 import React, { forwardRef } from 'react';
-import { View, Text, useColorScheme } from 'react-native';
+import { View, Text } from 'react-native';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useThemeStore } from '@/src/features/theme';
+import { useEffectiveTheme } from '@/src/features/theme';
 import type { ShareableArticle } from '../types';
 import { stripHtml } from '../utils/stripHtml';
 
@@ -11,10 +11,7 @@ interface ShareCardProps {
 }
 
 export const ShareCard = forwardRef<View, ShareCardProps>(({ article }, ref) => {
-  const systemTheme = useColorScheme();
-  const { theme, isSystemTheme } = useThemeStore();
-  const effectiveTheme = isSystemTheme ? systemTheme : theme;
-  const isDark = effectiveTheme === 'dark';
+  const { isDark } = useEffectiveTheme();
 
   const excerpt = stripHtml(article.excerpt);
 

@@ -4,7 +4,6 @@ import {
   Text,
   Modal,
   Pressable,
-  useColorScheme,
   ActivityIndicator,
   Share,
 } from 'react-native';
@@ -14,7 +13,7 @@ import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
 import * as FileSystem from 'expo-file-system';
 import { ShareCard } from './ShareCard';
-import { useThemeStore } from '@/src/features/theme';
+import { useEffectiveTheme } from '@/src/features/theme';
 import type { ShareableArticle } from '../types';
 
 interface ShareModalProps {
@@ -24,10 +23,7 @@ interface ShareModalProps {
 }
 
 export function ShareModal({ visible, onClose, article }: ShareModalProps) {
-  const systemTheme = useColorScheme();
-  const { theme, isSystemTheme } = useThemeStore();
-  const effectiveTheme = isSystemTheme ? systemTheme : theme;
-  const isDark = effectiveTheme === 'dark';
+  const { isDark } = useEffectiveTheme();
   const cardRef = useRef<View>(null);
   const [isSharing, setIsSharing] = useState(false);
 
