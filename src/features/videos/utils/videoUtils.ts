@@ -43,6 +43,31 @@ export function extractVideoInfo(content: string | undefined): VideoInfo | null 
     };
   }
 
+  // Check for WordPress video block (wp-video class)
+  const wpVideoMatch = content.match(WP_VIDEO_SRC_REGEX);
+  if (wpVideoMatch) {
+    return {
+      type: 'direct',
+      id: wpVideoMatch[1],
+      url: wpVideoMatch[1],
+      thumbnail: '',
+    };
+  }
+
+  // Check for WordPress video block by ID and extract URL from content
+  if (WP_VIDEO_BLOCK_REGEX.test(content)) {
+    // Try to find video URL within the block content
+    const directInBlock = content.match(DIRECT_VIDEO_REGEX);
+    if (directInBlock) {
+      return {
+        type: 'direct',
+        id: directInBlock[1],
+        url: directInBlock[1],
+        thumbnail: '',
+      };
+    }
+  }
+
   // Check for direct video URLs (mp4, webm, mov)
   const directMatch = content.match(DIRECT_VIDEO_REGEX);
   if (directMatch) {
