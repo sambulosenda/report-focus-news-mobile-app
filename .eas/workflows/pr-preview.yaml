@@ -25,6 +25,7 @@ jobs:
 
   ios_update:
     needs: [ios_build, ios_get_build]
+    if: ${{ always() && !cancelled() }}
     type: update
     params:
       channel: preview
@@ -49,6 +50,7 @@ jobs:
 
   android_update:
     needs: [android_build, android_get_build]
+    if: ${{ always() && !cancelled() }}
     type: update
     params:
       channel: preview
