@@ -43,12 +43,50 @@ jobs:
           npx eas workflow:run .eas/workflows/pr-preview.yaml --wait --json > "$RUNNER_TEMP/result.json"
 
       - name: Comment PR with preview link
+        if: always()
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const result = JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/result.json', 'utf8'));
+            const resultPath = process.env.RUNNER_TEMP + '/result.json';
 
+            // Check if result file exists
+            if (!fs.existsSync(resultPath)) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '## EAS Preview Failed\n\nEAS workflow result file not found.\n\nCheck the workflow logs for details.'
+              });
+              return;
+            }
+
+            // Try to parse JSON
+            let result;
+            try {
+              result = JSON.parse(fs.readFileSync(resultPath, 'utf8'));
+            } catch (e) {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## EAS Preview Failed\n\nFailed to parse EAS workflow result: ${e.message}\n\nCheck the workflow logs for details.`
+              });
+              return;
+            }
+
+            // Check if workflow failed
+            if (result.status !== 'SUCCESS') {
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## EAS Preview Failed\n\nEAS workflow failed with status: **${result.status}**\n\nCheck the workflow logs for details.`
+              });
+              return;
+            }
+
+            // Build success comment with links
             let links = '';
             if (result.jobs && Array.isArray(result.jobs)) {
               result.jobs.forEach(job => {
@@ -70,7 +108,7 @@ jobs:
               body += '**Build/Update Links:**\n' + links + '\n';
             }
 
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
