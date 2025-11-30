@@ -25,6 +25,7 @@ import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { createBookmarkableArticle } from '@/src/features/bookmarks';
 import { useSettingsStore, FONT_SIZE_CONFIG } from '@/src/features/settings';
+import type { ShareableArticle } from '@/src/features/sharing';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -63,6 +64,19 @@ export default function ArticleScreen() {
     ? createBookmarkableArticle(article)
     : undefined;
 
+  // Prepare article data for sharing
+  const shareableArticle: ShareableArticle | undefined = article
+    ? {
+        id: article.id,
+        title: article.title,
+        excerpt: article.excerpt,
+        imageUrl: imageUrl,
+        url: `https://reportfocus.com/${article.slug}`,
+        categoryName: category?.name,
+        authorName: author?.name,
+      }
+    : undefined;
+
   if (loading) {
     return (
       <SafeAreaView className="flex-1 bg-white dark:bg-black">
@@ -89,6 +103,7 @@ export default function ArticleScreen() {
         viewportHeight={viewportHeight}
         articleUrl={`https://reportfocus.com/${article.slug}`}
         article={bookmarkableArticle}
+        shareableArticle={shareableArticle}
       />
 
       <Animated.ScrollView
