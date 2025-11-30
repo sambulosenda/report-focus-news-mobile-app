@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeStore } from '@/src/features/theme';
 import { useFollowedTopics, TopicsList } from '@/src/features/topics';
+import { FontSizeSelector } from '@/src/features/settings';
 
 export default function SettingsScreen() {
   const { theme, isSystemTheme, toggleTheme, setSystemTheme } = useThemeStore();
@@ -56,6 +57,20 @@ export default function SettingsScreen() {
             trackColor={{ false: '#E5E5EA', true: '#007AFF' }}
           />
         </View>
+      </View>
+
+      {/* Text Size */}
+      <View className="mx-4 mt-6 rounded-xl overflow-hidden bg-gray-100 dark:bg-neutral-900">
+        <View className="flex-row items-center px-4 pt-3 pb-1">
+          <Ionicons
+            name="text-outline"
+            size={22}
+            color={isDark ? '#fff' : '#000'}
+            style={{ marginRight: 12 }}
+          />
+          <Text className="text-base text-gray-900 dark:text-white">Text Size</Text>
+        </View>
+        <FontSizeSelector isDark={isDark} />
       </View>
 
       {/* Followed Topics */}
