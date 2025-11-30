@@ -35,7 +35,7 @@ interface CategoriesWithImagesResponse {
 }
 
 export function useCategoriesWithImages(first: number = 20) {
-  const { data, loading, error } = useQuery<CategoriesWithImagesResponse>(
+  const { data, loading, error, refetch } = useQuery<CategoriesWithImagesResponse>(
     GET_CATEGORIES_WITH_IMAGES,
     {
       variables: { first },
@@ -59,5 +59,6 @@ export function useCategoriesWithImages(first: number = 20) {
     categories,
     loading,
     error,
+    refetch,
   };
 }

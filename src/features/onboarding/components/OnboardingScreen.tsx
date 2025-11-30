@@ -10,7 +10,7 @@ import { haptics } from '@/src/shared/utils/haptics';
 
 export function OnboardingScreen() {
   const router = useRouter();
-  const { categories, loading, error } = useCategoriesWithImages();
+  const { categories, loading, error, refetch } = useCategoriesWithImages();
   const { followTopic } = useTopicsStore();
   const { completeOnboarding } = useOnboardingStore();
 
@@ -81,7 +81,7 @@ export function OnboardingScreen() {
           <Text className="text-base text-gray-500 dark:text-white">
             Failed to load topics
           </Text>
-          <Pressable className="bg-accent px-6 py-3 rounded-lg" onPress={() => {}}>
+          <Pressable className="bg-accent px-6 py-3 rounded-lg" onPress={() => refetch()}>
             <Text className="text-white text-[15px] font-semibold">Retry</Text>
           </Pressable>
         </View>
