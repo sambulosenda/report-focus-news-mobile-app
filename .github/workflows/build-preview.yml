@@ -69,7 +69,7 @@ jobs:
           echo "Workflow success: $STATUS"
 
           # Extract build URLs if available
-          BUILD_URLS=$(jq -r '.jobs[]? | select(.turtleBuild) | .turtleBuild.artifacts.buildUrl // empty' "$FILE" 2>/dev/null || true)
+          BUILD_URLS=$(jq -r '.jobs[]? | select(.type == "build") | .outputs.artifacts.buildUrl // empty' "$FILE" || true)
 
           if [ -n "$BUILD_URLS" ]; then
             echo "Build URLs:"
