@@ -1,0 +1,45 @@
+name: Production Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Run EAS Workflow (production build + submit)
+        run: |
+          npx eas workflow:run .eas/workflows/production-release.yaml --wait --json > "$RUNNER_TEMP/result.json"
+
+      - name: Parse results
+        run: |
+          FILE="$RUNNER_TEMP/result.json"
+          echo "Production release completed"
+          jq '.status, .jobs[] | {name: .name, status: .status}' "$FILE"
+
+      - name: Create GitHub Release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const tag = context.ref.replace('refs/tags/', '');
+            github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag,
+              name: `Release ${tag}`,
+              body: `Production build submitted to App Store and Play Store via EAS Workflows.`,
+              draft: false,
+              prerelease: false
+            });
