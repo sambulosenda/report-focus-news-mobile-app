@@ -4,7 +4,7 @@ export interface VideoInfo {
   type: 'direct';
   id: string;
   url: string;
-  thumbnail: string;
+  thumbnail?: string;
 }
 
 export interface VideoPost extends Article {

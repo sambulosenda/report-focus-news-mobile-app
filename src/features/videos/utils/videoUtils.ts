@@ -29,7 +29,7 @@ export function extractVideoInfo(content: string | undefined): VideoInfo | null 
       type: 'direct',
       id: videoTagMatch[1],
       url: videoTagMatch[1],
-      thumbnail: '',
+      thumbnail: undefined,
     };
   }
 
@@ -39,7 +39,7 @@ export function extractVideoInfo(content: string | undefined): VideoInfo | null 
       type: 'direct',
       id: sourceTagMatch[1],
       url: sourceTagMatch[1],
-      thumbnail: '',
+      thumbnail: undefined,
     };
   }
 
@@ -50,7 +50,7 @@ export function extractVideoInfo(content: string | undefined): VideoInfo | null 
       type: 'direct',
       id: wpVideoMatch[1],
       url: wpVideoMatch[1],
-      thumbnail: '',
+      thumbnail: undefined,
     };
   }
 
@@ -63,7 +63,7 @@ export function extractVideoInfo(content: string | undefined): VideoInfo | null 
         type: 'direct',
         id: directInBlock[1],
         url: directInBlock[1],
-        thumbnail: '',
+        thumbnail: undefined,
       };
     }
   }
@@ -75,7 +75,7 @@ export function extractVideoInfo(content: string | undefined): VideoInfo | null 
       type: 'direct',
       id: directMatch[1],
       url: directMatch[1],
-      thumbnail: '',
+      thumbnail: undefined,
     };
   }
 
