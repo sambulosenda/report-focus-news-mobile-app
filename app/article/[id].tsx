@@ -25,13 +25,16 @@ import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { createBookmarkableArticle } from '@/src/features/bookmarks';
 import { useSettingsStore, FONT_SIZE_CONFIG } from '@/src/features/settings';
+import { useThemeStore } from '@/src/features/theme';
 import type { ShareableArticle } from '@/src/features/sharing';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { width, height: viewportHeight } = useWindowDimensions();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const systemTheme = useColorScheme();
+  const { theme, isSystemTheme } = useThemeStore();
+  const effectiveTheme = isSystemTheme ? systemTheme : theme;
+  const isDark = effectiveTheme === 'dark';
   const { fontSize } = useSettingsStore();
   const fontConfig = FONT_SIZE_CONFIG[fontSize];
 

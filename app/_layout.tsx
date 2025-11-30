@@ -2,7 +2,8 @@ import '../global.css';
 import { useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useColorScheme } from 'react-native';
+import { useColorScheme as useSystemColorScheme } from 'react-native';
+import { useColorScheme } from 'nativewind';
 import { GraphQLProvider } from '@/src/graphql/client';
 import { useThemeStore } from '@/src/features/theme';
 import { useOnboardingStore } from '@/src/features/onboarding';
@@ -10,8 +11,19 @@ import { useOnboardingStore } from '@/src/features/onboarding';
 export default function RootLayout() {
   const { theme, isSystemTheme } = useThemeStore();
   const { hasCompletedOnboarding, resetOnboarding } = useOnboardingStore();
-  const systemTheme = useColorScheme();
+  const systemTheme = useSystemColorScheme();
+  const { setColorScheme } = useColorScheme();
   const activeTheme = isSystemTheme ? systemTheme : theme;
+
+  // Sync NativeWind color scheme with theme store
+  useEffect(() => {
+    if (isSystemTheme) {
+      setColorScheme('system');
+    } else {
+      setColorScheme(theme);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [theme, isSystemTheme]);
 
   // Reset onboarding on app start in dev mode - remove when done
   useEffect(() => {

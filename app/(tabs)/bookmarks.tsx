@@ -3,11 +3,14 @@ import { View, Text, FlatList, useColorScheme } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useBookmarks, BookmarkedArticleCard } from '@/src/features/bookmarks';
+import { useThemeStore } from '@/src/features/theme';
 
 export default function BookmarksScreen() {
   const { bookmarks, count } = useBookmarks();
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
+  const systemTheme = useColorScheme();
+  const { theme, isSystemTheme } = useThemeStore();
+  const effectiveTheme = isSystemTheme ? systemTheme : theme;
+  const isDark = effectiveTheme === 'dark';
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>

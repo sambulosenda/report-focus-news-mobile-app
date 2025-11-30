@@ -36,12 +36,11 @@ export function Skeleton({ width = '100%', height = 16, borderRadius = 4, style 
           width,
           height,
           borderRadius,
-          backgroundColor: '#E5E7EB',
           overflow: 'hidden',
         },
         style,
       ]}
-      className="dark:bg-gray-800">
+      className="bg-gray-200 dark:bg-gray-800">
       <AnimatedLinearGradient
         colors={['transparent', 'rgba(255,255,255,0.3)', 'transparent']}
         start={{ x: 0, y: 0 }}
