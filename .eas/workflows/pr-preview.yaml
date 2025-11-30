@@ -24,7 +24,7 @@ jobs:
       profile: preview
 
   ios_update:
-    after: [ios_build, ios_get_build]
+    needs: [ios_build, ios_get_build]
     type: update
     params:
       channel: preview
@@ -48,7 +48,7 @@ jobs:
       profile: preview
 
   android_update:
-    after: [android_build, android_get_build]
+    needs: [android_build, android_get_build]
     type: update
     params:
       channel: preview
