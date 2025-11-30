@@ -47,7 +47,8 @@
           }
         }
       ],
-      "@bacons/apple-targets"
+      "@bacons/apple-targets",
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true,

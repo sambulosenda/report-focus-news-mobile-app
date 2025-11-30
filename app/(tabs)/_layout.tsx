@@ -20,6 +20,11 @@ export default function TabLayout() {
         <Label>Home</Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="videos">
+        <Icon src={<VectorIcon family={Ionicons as any} name="play-circle-outline" />} />
+        <Label>Videos</Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="search">
         <Icon src={<VectorIcon family={Ionicons as any} name="search-outline" />} />
         <Label>Search</Label>
