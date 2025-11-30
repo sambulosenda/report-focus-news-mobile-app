@@ -34,15 +34,17 @@ export function ShareModal({ visible, onClose, article }: ShareModalProps) {
     setIsSharing(true);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
+    let tempUri: string | null = null;
+
     try {
-      const uri = await captureRef(cardRef, {
+      tempUri = await captureRef(cardRef, {
         format: 'png',
         quality: 1,
       });
 
       const isAvailable = await Sharing.isAvailableAsync();
       if (isAvailable) {
-        await Sharing.shareAsync(uri, {
+        await Sharing.shareAsync(tempUri, {
           mimeType: 'image/png',
           dialogTitle: 'Share Article',
         });
@@ -52,6 +54,14 @@ export function ShareModal({ visible, onClose, article }: ShareModalProps) {
       console.warn('Share image failed:', error);
     } finally {
       setIsSharing(false);
+      // Clean up temp file
+      if (tempUri) {
+        try {
+          await FileSystem.deleteAsync(tempUri, { idempotent: true });
+        } catch (deleteError) {
+          console.warn('Failed to delete temp file:', deleteError);
+        }
+      }
     }
   };
 
