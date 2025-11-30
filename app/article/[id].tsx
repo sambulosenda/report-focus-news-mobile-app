@@ -24,12 +24,15 @@ import {
 import { LoadingSpinner, ErrorView } from '@/src/shared/components';
 import { getReadingTimeDisplay } from '@/src/shared/utils/readingTime';
 import { createBookmarkableArticle } from '@/src/features/bookmarks';
+import { useSettingsStore, FONT_SIZE_CONFIG } from '@/src/features/settings';
 
 export default function ArticleScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { width, height: viewportHeight } = useWindowDimensions();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
+  const { fontSize } = useSettingsStore();
+  const fontConfig = FONT_SIZE_CONFIG[fontSize];
 
   const scrollY = useSharedValue(0);
   const contentHeight = useSharedValue(1000);
@@ -150,21 +153,21 @@ export default function ArticleScreen() {
               source={{ html: article.content }}
               baseStyle={{
                 color: isDark ? '#e5e5e5' : '#1f2937',
-                fontSize: 18,
-                lineHeight: 30,
+                fontSize: fontConfig.baseSize,
+                lineHeight: fontConfig.lineHeight,
               }}
               tagsStyles={{
                 p: { marginBottom: 20 },
                 a: { color: '#007AFF', textDecorationLine: 'none' },
                 h2: {
-                  fontSize: 24,
+                  fontSize: fontConfig.h2Size,
                   fontWeight: 'bold',
                   marginTop: 32,
                   marginBottom: 16,
                   color: isDark ? '#fff' : '#111827',
                 },
                 h3: {
-                  fontSize: 20,
+                  fontSize: fontConfig.h3Size,
                   fontWeight: 'bold',
                   marginTop: 28,
                   marginBottom: 12,
