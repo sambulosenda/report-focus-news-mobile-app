@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "mobile-app-report-focus",
-    "slug": "mobile-app-report-focus",
-    "version": "1.0.0",
+    "name": "RF News",
+    "slug": "report-focus-news",
+    "version": "2.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "reportfocus",
@@ -11,7 +11,11 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.sambulosenda.reportfocusnews",
+      "buildNumber": "30",
       "appleTeamId": "Y53KNKBDS8",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      },
       "entitlements": {
         "com.apple.security.application-groups": [
           "group.com.sambulosenda.reportfocusnews.widget"
@@ -27,12 +31,20 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.sambulosenda.reportfocusnews"
+      "package": "com.sambulosenda.reportfocusnews",
+      "versionCode": 7
     },
     "web": {
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
+    "updates": {
+      "url": "https://u.expo.dev/e4cc952c-76fb-4207-a3a0-a8bfc2ad375f",
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
+      "fallbackToCacheTimeout": 30000
+    },
+    "runtimeVersion": "2.0.1",
     "plugins": [
       "expo-router",
       [
@@ -48,11 +60,25 @@
         }
       ],
       "@bacons/apple-targets",
-      "expo-video"
+      "expo-video",
+      [
+        "expo-updates",
+        {
+          "username": "sambulosenda"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "e4cc952c-76fb-4207-a3a0-a8bfc2ad375f"
+      }
     }
   }
 }
