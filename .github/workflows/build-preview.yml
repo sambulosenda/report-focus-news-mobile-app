@@ -45,7 +45,7 @@ jobs:
 
       - name: Run EAS Workflow (build or update)
         run: |
-          npx eas workflow:run .eas/workflows/build-or-update.yaml --wait --json > "$RUNNER_TEMP/result.json"
+          eas workflow:run .eas/workflows/build-or-update.yaml --wait --json > "$RUNNER_TEMP/result.json"
 
       - name: Parse results
         id: parse
