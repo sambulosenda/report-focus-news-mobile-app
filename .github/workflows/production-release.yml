@@ -21,7 +21,7 @@ jobs:
 
       - name: Run EAS Workflow (production build + submit)
         run: |
-          npx eas workflow:run .eas/workflows/production-release.yaml --wait --json > "$RUNNER_TEMP/result.json"
+          eas workflow:run .eas/workflows/production-release.yaml --wait --json > "$RUNNER_TEMP/result.json"
 
       - name: Validate results
         run: |
