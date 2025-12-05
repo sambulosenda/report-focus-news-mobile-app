@@ -5,7 +5,7 @@ import { useRouter } from 'expo-router';
 import { useCategories } from '@/src/features/categories';
 import { useIsFollowing, useToggleFollow } from '@/src/features/topics';
 import { haptics } from '@/src/shared/utils/haptics';
-import { Icon, NativeHeader } from '@/src/shared/components';
+import { Icon, NativeHeader, ErrorView } from '@/src/shared/components';
 
 interface CategoryRowProps {
   category: {
@@ -67,7 +67,7 @@ function CategoryRow({ category }: CategoryRowProps) {
 }
 
 export default function CategoriesScreen() {
-  const { categories, loading } = useCategories();
+  const { categories, loading, error, refetch } = useCategories();
   const scrollY = useSharedValue(0);
 
   const scrollHandler = useAnimatedScrollHandler({
@@ -75,6 +75,15 @@ export default function CategoriesScreen() {
       scrollY.value = event.contentOffset.y;
     },
   });
+
+  if (error) {
+    return (
+      <View className="flex-1 bg-white dark:bg-black">
+        <NativeHeader scrollY={scrollY} title="Categories" />
+        <ErrorView message={error.message} onRetry={refetch} />
+      </View>
+    );
+  }
 
   const renderItem = useCallback(
     ({ item }: { item: CategoryRowProps['category'] }) => (

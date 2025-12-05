@@ -4,7 +4,7 @@ import { GET_CATEGORIES } from '../queries';
 import type { CategoriesResponse, CategoryItem } from '../types';
 
 export function useCategories(first: number = 20) {
-  const { data, loading, error } = useQuery<CategoriesResponse>(GET_CATEGORIES, {
+  const { data, loading, error, refetch } = useQuery<CategoriesResponse>(GET_CATEGORIES, {
     variables: { first },
   });
 
@@ -17,5 +17,6 @@ export function useCategories(first: number = 20) {
     categories,
     loading,
     error,
+    refetch,
   };
 }
