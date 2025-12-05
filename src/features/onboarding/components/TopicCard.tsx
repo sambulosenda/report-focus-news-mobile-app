@@ -40,37 +40,37 @@ export function TopicCard({ category, isSelected, onToggle }: TopicCardProps) {
 
   return (
     <AnimatedPressable
-      className="flex-1 m-1.5 h-[140px] rounded-xl overflow-hidden"
+      className="flex-1 h-[130px] rounded-2xl overflow-hidden"
       style={animatedStyle}
       onPress={handlePress}
     >
       <ImageBackground
         source={{ uri: imageUrl }}
         className="flex-1 justify-end"
-        imageStyle={{ borderRadius: 12 }}
+        imageStyle={{ borderRadius: 16 }}
       >
         <LinearGradient
-          colors={['transparent', 'rgba(0,0,0,0.7)']}
-          className="flex-1 justify-end p-3"
+          colors={['transparent', 'rgba(0,0,0,0.75)']}
+          className="flex-1 justify-end p-4"
         >
-          <View className="gap-0.5">
-            <Text className="text-white text-base font-bold" numberOfLines={2}>
+          <View>
+            <Text className="text-white text-[15px] font-semibold" numberOfLines={2}>
               {category.name}
             </Text>
             {category.count && (
-              <Text className="text-white/70 text-xs">{category.count} articles</Text>
+              <Text className="text-white/60 text-[12px] mt-0.5">{category.count} articles</Text>
             )}
           </View>
         </LinearGradient>
 
         {isSelected && (
-          <View className="absolute top-2 right-2 bg-white rounded-full">
-            <Icon name="checkmark-circle" size={28} color="#007AFF" />
+          <View className="absolute top-3 right-3 bg-white rounded-full shadow-sm">
+            <Icon name="checkmark-circle" size={26} color="#007AFF" />
           </View>
         )}
 
         {isSelected && (
-          <View className="absolute inset-0 rounded-xl border-[3px] border-accent" />
+          <View className="absolute inset-0 rounded-2xl border-[3px] border-accent" />
         )}
       </ImageBackground>
     </AnimatedPressable>

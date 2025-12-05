@@ -90,12 +90,12 @@ export function OnboardingScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-black">
-      <View className="px-5 pt-5 pb-4">
-        <Text className="text-[28px] font-bold text-black dark:text-white mb-2">
+    <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
+      <View className="px-6 pt-8 pb-6">
+        <Text className="text-[34px] font-bold text-black dark:text-white tracking-tight">
           What interests you?
         </Text>
-        <Text className="text-base text-gray-500 dark:text-gray-400">
+        <Text className="text-[17px] text-gray-500 dark:text-gray-400 mt-2 leading-relaxed">
           Choose topics to personalize your feed
         </Text>
       </View>
@@ -105,25 +105,32 @@ export function OnboardingScreen() {
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         numColumns={2}
-        contentContainerStyle={{ paddingHorizontal: 14, paddingBottom: 16 }}
+        contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 20 }}
+        columnWrapperStyle={{ gap: 12 }}
+        ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
         showsVerticalScrollIndicator={false}
       />
 
-      <View className="px-5 pb-4 gap-3">
-        <Text className="text-sm text-gray-500 dark:text-gray-400 text-center">
+      <View className="px-6 pb-8 pt-4 border-t border-gray-100 dark:border-gray-800">
+        <Text className="text-[13px] text-gray-400 dark:text-gray-500 text-center mb-4 tracking-wide">
           {selectedTopics.size} topic{selectedTopics.size !== 1 ? 's' : ''} selected
         </Text>
 
         <Pressable
-          className={`bg-accent py-4 rounded-xl items-center ${selectedTopics.size === 0 ? 'opacity-50' : ''}`}
+          className={`bg-accent py-[16px] rounded-[14px] items-center ${selectedTopics.size === 0 ? 'opacity-40' : ''}`}
           onPress={handleContinue}
           disabled={selectedTopics.size === 0}
+          style={({ pressed }) => ({ opacity: pressed && selectedTopics.size > 0 ? 0.8 : undefined })}
         >
           <Text className="text-white text-[17px] font-semibold">Continue</Text>
         </Pressable>
 
-        <Pressable className="py-3 items-center" onPress={handleSkip}>
-          <Text className="text-gray-500 dark:text-gray-400 text-[15px]">
+        <Pressable
+          className="py-4 items-center mt-2"
+          onPress={handleSkip}
+          style={({ pressed }) => ({ opacity: pressed ? 0.6 : 1 })}
+        >
+          <Text className="text-gray-400 dark:text-gray-500 text-[15px] font-medium">
             Skip for now
           </Text>
         </Pressable>
