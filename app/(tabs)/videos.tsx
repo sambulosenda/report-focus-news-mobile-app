@@ -1,12 +1,21 @@
 import React, { useCallback, useState } from 'react';
-import { View, Text, FlatList, RefreshControl, ActivityIndicator } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, RefreshControl, ActivityIndicator } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { useVideos, VideoCard, type VideoPost } from '@/src/features/videos';
-import { ErrorView } from '@/src/shared/components';
+import { ErrorView, NativeHeader } from '@/src/shared/components';
 
 export default function VideosScreen() {
   const { videos, loading, error, refetch, loadMore, hasMore } = useVideos();
   const [refreshing, setRefreshing] = useState(false);
+  const insets = useSafeAreaInsets();
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -25,18 +34,6 @@ export default function VideosScreen() {
   );
 
   const keyExtractor = useCallback((item: VideoPost) => item.id, []);
-
-  const ListHeader = useCallback(
-    () => (
-      <View className="px-4 pt-2 pb-4">
-        <Text className="text-3xl font-bold text-gray-900 dark:text-white">Videos</Text>
-        <Text className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-          Watch the latest news videos
-        </Text>
-      </View>
-    ),
-    [],
-  );
 
   const ListFooter = useCallback(
     () =>
@@ -62,43 +59,59 @@ export default function VideosScreen() {
 
   if (loading && videos.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
-        <View className="px-4 pt-2 pb-4">
-          <Text className="text-3xl font-bold text-gray-900 dark:text-white">Videos</Text>
+      <View className="flex-1 bg-white dark:bg-black" style={{ paddingTop: insets.top }}>
+        <View className="px-4 h-[100px] justify-center">
+          <Text className="text-[34px] font-bold text-gray-900 dark:text-white tracking-tight">
+            Videos
+          </Text>
+          <Text className="text-[15px] text-gray-500 dark:text-gray-400 mt-1">
+            Watch the latest news videos
+          </Text>
         </View>
         <View className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" color="#007AFF" />
           <Text className="text-gray-500 dark:text-gray-400 mt-3">Loading videos...</Text>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 
   if (error && videos.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
+      <View className="flex-1 bg-white dark:bg-black" style={{ paddingTop: insets.top }}>
         <ErrorView message="Failed to load videos" onRetry={refetch} />
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
-      <FlatList
+    <View className="flex-1 bg-white dark:bg-black">
+      <NativeHeader
+        scrollY={scrollY}
+        title="Videos"
+        subtitle="Watch the latest news videos"
+      />
+
+      <Animated.FlatList
         data={videos}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
-        ListHeaderComponent={ListHeader}
         ListFooterComponent={ListFooter}
         ListEmptyComponent={ListEmpty}
         onEndReached={hasMore && videos.length > 0 ? loadMore : undefined}
         onEndReachedThreshold={0.5}
+        onScroll={scrollHandler}
+        scrollEventThrottle={16}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#007AFF" />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#007AFF"
+          />
         }
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }

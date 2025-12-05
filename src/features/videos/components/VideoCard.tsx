@@ -1,9 +1,9 @@
 import { View, Text, Pressable } from 'react-native';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import { format } from 'date-fns';
 import type { VideoPost } from '../types';
+import { Icon } from '@/src/shared/components';
 
 interface VideoCardProps {
   video: VideoPost;
@@ -38,7 +38,7 @@ export function VideoCard({ video }: VideoCardProps) {
         {/* Play button overlay */}
         <View className="absolute inset-0 items-center justify-center">
           <View className="w-16 h-16 rounded-full bg-black/60 items-center justify-center">
-            <Ionicons name="play" size={32} color="#fff" style={{ marginLeft: 4 }} />
+            <Icon name="play" size={32} color="#fff" style={{ marginLeft: 4 }} />
           </View>
         </View>
 

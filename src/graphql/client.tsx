@@ -42,9 +42,12 @@ const cache = new InMemoryCache({
           keyArgs: ['where'],
           merge(existing, incoming, { args }) {
             if (!args?.after) return incoming;
+            const existingNodes = existing?.nodes || [];
+            const existingIds = new Set(existingNodes.map((n: { __ref: string }) => n.__ref));
+            const newNodes = incoming.nodes.filter((n: { __ref: string }) => !existingIds.has(n.__ref));
             return {
               ...incoming,
-              nodes: [...(existing?.nodes || []), ...incoming.nodes],
+              nodes: [...existingNodes, ...newNodes],
             };
           },
         },

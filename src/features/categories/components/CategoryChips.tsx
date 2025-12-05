@@ -1,9 +1,9 @@
 import { memo } from 'react';
 import { ScrollView, Pressable, Text, View } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { haptics } from '@/src/shared/utils/haptics';
 import { useIsFollowing, useToggleFollow } from '@/src/features/topics';
 import type { CategoryItem } from '../types';
+import { Icon } from '@/src/shared/components';
 
 interface CategoryChipsProps {
   categories: CategoryItem[];
@@ -39,15 +39,15 @@ const CategoryChip = memo(function CategoryChip({
     <Pressable
       onPress={onSelect}
       onLongPress={handleLongPress}
-      className={`flex-row items-center px-4 py-2 rounded-full ${
+      className={`flex-row items-center px-4 py-2.5 rounded-full ${
         isSelected ? 'bg-accent' : 'bg-gray-100 dark:bg-gray-800'
       }`}>
       {isFollowing && (
-        <Ionicons
-          name="heart"
+        <Icon
+          name="heart-fill"
           size={14}
           color={isSelected ? '#fff' : '#007AFF'}
-          style={{ marginRight: 4 }}
+          style={{ marginRight: 6 }}
         />
       )}
       <Text
@@ -68,17 +68,17 @@ export const CategoryChips = memo(function CategoryChips({
   onSelect,
 }: CategoryChipsProps) {
   return (
-    <View className="bg-white dark:bg-black py-3">
+    <View className="bg-white dark:bg-black pt-1 pb-3">
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ paddingHorizontal: 16, gap: 8 }}>
+        contentContainerStyle={{ paddingHorizontal: 16, gap: 10 }}>
         <Pressable
           onPress={() => {
             haptics.selection();
             onSelect(null);
           }}
-          className={`px-4 py-2 rounded-full ${
+          className={`px-4 py-2.5 rounded-full ${
             selectedId === null ? 'bg-accent' : 'bg-gray-100 dark:bg-gray-800'
           }`}>
           <Text

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import Animated, {
   useAnimatedStyle,
@@ -19,6 +18,7 @@ import {
   BookmarkedArticle,
 } from '@/src/features/bookmarks';
 import { ShareModal, type ShareableArticle } from '@/src/features/sharing';
+import { Icon } from '@/src/shared/components';
 
 export interface ArticleHeaderProps {
   scrollY: SharedValue<number>;
@@ -141,7 +141,7 @@ export function ArticleHeader({
             onPress={handleBack}
             className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
           >
-            <Ionicons name="arrow-back" size={22} color={iconColor} />
+            <Icon name="arrow-back" size={22} color={iconColor} />
           </Pressable>
 
           {/* Animated title */}
@@ -159,15 +159,15 @@ export function ArticleHeader({
               onPress={handleShare}
               className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
             >
-              <Ionicons name="share-outline" size={20} color={iconColor} />
+              <Icon name="share" size={20} color={iconColor} />
             </Pressable>
             <Pressable
               onPress={handleBookmark}
               className="w-10 h-10 items-center justify-center rounded-full bg-black/20 dark:bg-white/20"
             >
               <Animated.View style={bookmarkAnimatedStyle}>
-                <Ionicons
-                  name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+                <Icon
+                  name={isBookmarked ? 'bookmark-fill' : 'bookmark'}
                   size={20}
                   color={isBookmarked ? '#007AFF' : iconColor}
                 />

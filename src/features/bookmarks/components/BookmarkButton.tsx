@@ -1,5 +1,4 @@
 import { Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import Animated, {
   useSharedValue,
@@ -9,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useIsBookmarked, useToggleBookmark } from '../hooks/useBookmarks';
 import { BookmarkedArticle } from '../types';
+import { Icon } from '@/src/shared/components';
 
 interface BookmarkButtonProps {
   article: BookmarkedArticle;
@@ -48,8 +48,8 @@ export function BookmarkButton({
   return (
     <Pressable onPress={handlePress} hitSlop={12}>
       <Animated.View style={animatedStyle}>
-        <Ionicons
-          name={isBookmarked ? 'bookmark' : 'bookmark-outline'}
+        <Icon
+          name={isBookmarked ? 'bookmark-fill' : 'bookmark'}
           size={size}
           color={isBookmarked ? activeColor : color}
         />
