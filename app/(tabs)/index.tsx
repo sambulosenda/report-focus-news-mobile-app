@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { View, Text, RefreshControl } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, RefreshControl, Pressable } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
@@ -12,20 +13,20 @@ import {
   TrendingSection,
   type Article,
 } from '@/src/features/articles';
-import { CategoryChips, useCategories, useCategoryArticles } from '@/src/features/categories';
 import { usePersonalizedFeed } from '@/src/features/topics';
 import {
   LoadingSpinner,
   ErrorView,
   HeroCardSkeleton,
   ArticleCardSkeleton,
-  CollapsibleHeader,
+  Icon,
 } from '@/src/shared/components';
 
 export default function HomeScreen() {
-  const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [refreshing, setRefreshing] = useState(false);
   const scrollY = useSharedValue(0);
+  const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
@@ -34,13 +35,7 @@ export default function HomeScreen() {
   });
 
   const { article: featuredArticle } = useFeaturedArticle();
-  const { categories } = useCategories();
 
-  // Use different hooks based on category selection
-  const allArticles = usePersonalizedFeed(15);
-  const categoryArticles = useCategoryArticles(selectedCategory);
-
-  // Choose which data source to use
   const {
     articles,
     loading,
@@ -48,7 +43,7 @@ export default function HomeScreen() {
     loadMore,
     refetch,
     hasMore,
-  } = selectedCategory === null ? allArticles : categoryArticles;
+  } = usePersonalizedFeed(15);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -57,9 +52,9 @@ export default function HomeScreen() {
   }, [refetch]);
 
   const filteredArticles = useMemo(() => {
-    if (selectedCategory !== null || !featuredArticle) return articles;
+    if (!featuredArticle) return articles;
     return articles.filter(a => a.id !== featuredArticle.id);
-  }, [articles, featuredArticle, selectedCategory]);
+  }, [articles, featuredArticle]);
 
   const renderItem = useCallback(
     ({ item }: { item: Article }) => <ArticleCard article={item} />,
@@ -71,18 +66,14 @@ export default function HomeScreen() {
   const ListHeader = useCallback(
     () => (
       <View>
-        {selectedCategory === null && (
-          <>
-            {featuredArticle && <HeroCard article={featuredArticle} />}
-            <TrendingSection excludeIds={featuredArticle ? [featuredArticle.id] : []} />
-          </>
-        )}
+        {featuredArticle && <HeroCard article={featuredArticle} />}
+        <TrendingSection excludeIds={featuredArticle ? [featuredArticle.id] : []} />
         <Text className="text-lg font-semibold px-4 py-3 text-gray-900 dark:text-white">
-          {selectedCategory === null ? 'Latest Articles' : 'Articles'}
+          Latest Articles
         </Text>
       </View>
     ),
-    [featuredArticle, selectedCategory],
+    [featuredArticle],
   );
 
   const ListFooter = useCallback(
@@ -102,11 +93,10 @@ export default function HomeScreen() {
 
   if (loading && articles.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
+      <View className="flex-1 bg-white dark:bg-black" style={{ paddingTop: insets.top }}>
         <View className="bg-white dark:bg-black px-4 h-[72px] justify-center">
-          <Text className="text-[28px] font-bold text-gray-900 dark:text-white">Report Focus</Text>
-          <Text className="text-sm text-gray-600 dark:text-gray-400 mt-0.5">
-            Stay informed with the latest news
+          <Text className="text-[34px] font-bold text-gray-900 dark:text-white tracking-tight">
+            Report Focus
           </Text>
         </View>
         <HeroCardSkeleton />
@@ -116,29 +106,33 @@ export default function HomeScreen() {
         {[1, 2, 3, 4].map(i => (
           <ArticleCardSkeleton key={i} />
         ))}
-      </SafeAreaView>
+      </View>
     );
   }
 
   if (error && articles.length === 0) {
     return (
-      <SafeAreaView className="flex-1 bg-white dark:bg-black">
+      <View className="flex-1 bg-white dark:bg-black" style={{ paddingTop: insets.top }}>
         <ErrorView message={error.message} onRetry={refetch} />
-      </SafeAreaView>
+      </View>
     );
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
-      {/* Collapsible Header */}
-      <CollapsibleHeader scrollY={scrollY} />
-
-      {/* Sticky Category Bar */}
-      <CategoryChips
-        categories={categories}
-        selectedId={selectedCategory}
-        onSelect={setSelectedCategory}
-      />
+    <View className="flex-1 bg-white dark:bg-black" style={{ paddingTop: insets.top }}>
+      {/* Simple header with title and settings icon */}
+      <View className="flex-row items-center justify-between px-4 h-[52px]">
+        <Text className="text-[28px] font-bold text-gray-900 dark:text-white tracking-tight">
+          Report Focus
+        </Text>
+        <Pressable
+          onPress={() => router.push('/settings')}
+          className="w-10 h-10 items-center justify-center"
+          hitSlop={8}
+        >
+          <Icon name="settings" size={24} color="#8E8E93" />
+        </Pressable>
+      </View>
 
       <Animated.FlatList
         data={filteredArticles}
@@ -152,7 +146,11 @@ export default function HomeScreen() {
         onScroll={scrollHandler}
         scrollEventThrottle={16}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#007AFF" />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#007AFF"
+          />
         }
         showsVerticalScrollIndicator={false}
         removeClippedSubviews
@@ -160,6 +158,6 @@ export default function HomeScreen() {
         windowSize={5}
         contentContainerStyle={{ paddingBottom: 20 }}
       />
-    </SafeAreaView>
+    </View>
   );
 }

@@ -1,12 +1,11 @@
 import { memo } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
 import { navigationService } from '@/src/navigation/routes';
 import { formatArticleDate } from '@/src/shared/formatters/dates';
 import { stripHtml } from '@/src/shared/utils/html';
 import { haptics } from '@/src/shared/utils/haptics';
-import { AnimatedPressable } from '@/src/shared/components';
+import { AnimatedPressable, Icon } from '@/src/shared/components';
 import { useBookmarkStore } from '../stores/bookmarkStore';
 import type { BookmarkedArticle } from '../types';
 
@@ -72,7 +71,7 @@ export const BookmarkedArticleCard = memo(function BookmarkedArticleCard({
           onPress={handleRemove}
           hitSlop={8}
           className="p-1">
-          <Ionicons name="bookmark" size={20} color="#007AFF" />
+          <Icon name="bookmark-fill" size={20} color="#007AFF" />
         </Pressable>
       </View>
     </AnimatedPressable>

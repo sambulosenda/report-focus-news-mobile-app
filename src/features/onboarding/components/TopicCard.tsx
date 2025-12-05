@@ -1,5 +1,4 @@
 import { Pressable, View, Text, ImageBackground } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   useSharedValue,
@@ -9,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { haptics } from '@/src/shared/utils/haptics';
 import type { CategoryWithImage } from '../hooks/useCategoriesWithImages';
+import { Icon } from '@/src/shared/components';
 
 interface TopicCardProps {
   category: CategoryWithImage;
@@ -65,7 +65,7 @@ export function TopicCard({ category, isSelected, onToggle }: TopicCardProps) {
 
         {isSelected && (
           <View className="absolute top-2 right-2 bg-white rounded-full">
-            <Ionicons name="checkmark-circle" size={28} color="#007AFF" />
+            <Icon name="checkmark-circle" size={28} color="#007AFF" />
           </View>
         )}
 

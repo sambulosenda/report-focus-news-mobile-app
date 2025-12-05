@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   Share,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
@@ -15,6 +14,7 @@ import * as FileSystem from 'expo-file-system';
 import { ShareCard } from './ShareCard';
 import { useEffectiveTheme } from '@/src/features/theme';
 import type { ShareableArticle } from '../types';
+import { Icon } from '@/src/shared/components';
 
 interface ShareModalProps {
   visible: boolean;
@@ -121,7 +121,7 @@ export function ShareModal({ visible, onClose, article }: ShareModalProps) {
               Share Article
             </Text>
             <Pressable onPress={onClose} hitSlop={10}>
-              <Ionicons
+              <Icon
                 name="close-circle"
                 size={28}
                 color={isDark ? '#666' : '#999'}
@@ -159,8 +159,8 @@ export function ShareModal({ visible, onClose, article }: ShareModalProps) {
               {isSharing ? (
                 <ActivityIndicator color="#fff" style={{ marginRight: 8 }} />
               ) : (
-                <Ionicons
-                  name="image-outline"
+                <Icon
+                  name="image"
                   size={20}
                   color="#fff"
                   style={{ marginRight: 8 }}
@@ -182,8 +182,8 @@ export function ShareModal({ visible, onClose, article }: ShareModalProps) {
                 borderRadius: 12,
               }}
             >
-              <Ionicons
-                name="link-outline"
+              <Icon
+                name="link"
                 size={20}
                 color={isDark ? '#fff' : '#000'}
                 style={{ marginRight: 8 }}

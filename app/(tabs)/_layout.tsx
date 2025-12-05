@@ -20,6 +20,11 @@ export default function TabLayout() {
         <Label>Home</Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="categories">
+        <Icon src={<VectorIcon family={Ionicons as any} name="grid-outline" />} />
+        <Label>Categories</Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger name="videos">
         <Icon src={<VectorIcon family={Ionicons as any} name="play-circle-outline" />} />
         <Label>Videos</Label>
@@ -33,11 +38,6 @@ export default function TabLayout() {
       <NativeTabs.Trigger name="bookmarks">
         <Icon src={<VectorIcon family={Ionicons as any} name="bookmark-outline" />} />
         <Label>Saved</Label>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="settings">
-        <Icon src={<VectorIcon family={Ionicons as any} name="settings-outline" />} />
-        <Label>Settings</Label>
       </NativeTabs.Trigger>
     </NativeTabs>
   );

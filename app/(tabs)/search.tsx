@@ -1,11 +1,18 @@
 import React, { useCallback } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text } from 'react-native';
+import Animated, { useSharedValue, useAnimatedScrollHandler } from 'react-native-reanimated';
 import { useSearchArticles, ArticleCardCompact, type Article } from '@/src/features/articles';
-import { SearchBar, SearchResultSkeleton } from '@/src/shared/components';
+import { SearchBar, SearchResultSkeleton, NativeHeader } from '@/src/shared/components';
 
 export default function SearchScreen() {
   const { query, setQuery, results, loading, clear, hasSearched } = useSearchArticles();
+  const scrollY = useSharedValue(0);
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
 
   const renderItem = useCallback(
     ({ item }: { item: Article }) => <ArticleCardCompact article={item} />,
@@ -13,6 +20,12 @@ export default function SearchScreen() {
   );
 
   const keyExtractor = useCallback((item: Article) => item.id, []);
+
+  const ListHeader = useCallback(() => (
+    <View style={{ paddingTop: 8 }}>
+      <SearchBar value={query} onChangeText={setQuery} onClear={clear} />
+    </View>
+  ), [query, setQuery, clear]);
 
   const EmptyComponent = useCallback(() => {
     if (!hasSearched) {
@@ -45,29 +58,29 @@ export default function SearchScreen() {
   }, [hasSearched, results.length, loading]);
 
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-black" edges={['top']}>
-      <View className="px-4 pt-2 pb-4">
-        <Text className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">Search</Text>
-      </View>
-
-      <SearchBar value={query} onChangeText={setQuery} onClear={clear} />
+    <View className="flex-1 bg-white dark:bg-black">
+      <NativeHeader scrollY={scrollY} title="Search" />
 
       {loading && hasSearched ? (
         <View>
+          <SearchBar value={query} onChangeText={setQuery} onClear={clear} />
           {[1, 2, 3, 4, 5].map(i => (
             <SearchResultSkeleton key={i} />
           ))}
         </View>
       ) : (
-        <FlatList
+        <Animated.FlatList
           data={results}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          ListHeaderComponent={ListHeader}
           ListEmptyComponent={EmptyComponent}
+          onScroll={scrollHandler}
+          scrollEventThrottle={16}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 20 }}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }

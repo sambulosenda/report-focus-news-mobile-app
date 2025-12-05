@@ -1,8 +1,8 @@
 import { View, Text, Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { useFollowedTopics } from '../hooks/useFollowedTopics';
 import { useEffectiveTheme } from '@/src/features/theme';
 import { haptics } from '@/src/shared/utils/haptics';
+import { Icon } from '@/src/shared/components';
 
 export function TopicsList() {
   const { followedTopics, unfollowTopic, count } = useFollowedTopics();
@@ -37,8 +37,8 @@ export function TopicsList() {
             {topic.name}
           </Text>
           <Pressable onPress={() => handleUnfollow(topic.id)} hitSlop={8}>
-            <Ionicons
-              name="heart"
+            <Icon
+              name="heart-fill"
               size={20}
               color="#007AFF"
             />

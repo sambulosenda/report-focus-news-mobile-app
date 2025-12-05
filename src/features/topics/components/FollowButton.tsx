@@ -1,5 +1,4 @@
 import { Pressable } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import Animated, {
   useSharedValue,
@@ -9,6 +8,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useIsFollowing, useToggleFollow } from '../hooks/useFollowedTopics';
 import { FollowedTopic } from '../types';
+import { Icon } from '@/src/shared/components';
 
 interface FollowButtonProps {
   topic: Omit<FollowedTopic, 'followedAt'>;
@@ -48,8 +48,8 @@ export function FollowButton({
   return (
     <Pressable onPress={handlePress} hitSlop={8}>
       <Animated.View style={animatedStyle}>
-        <Ionicons
-          name={isFollowing ? 'heart' : 'heart-outline'}
+        <Icon
+          name={isFollowing ? 'heart-fill' : 'heart'}
           size={size}
           color={isFollowing ? activeColor : color}
         />

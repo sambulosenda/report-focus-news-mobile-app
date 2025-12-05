@@ -2,14 +2,13 @@ import { View, Text, Pressable, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useQuery } from '@apollo/client/react';
-import { Ionicons } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { format } from 'date-fns';
 import * as Haptics from 'expo-haptics';
 import { GET_POST } from '@/src/features/articles/queries';
 import type { PostQueryResponse } from '@/src/features/articles';
 import { VideoPlayer, extractVideoInfo } from '@/src/features/videos';
-import { LoadingSpinner, ErrorView } from '@/src/shared/components';
+import { LoadingSpinner, ErrorView, Icon } from '@/src/shared/components';
 
 export default function VideoDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -54,7 +53,7 @@ export default function VideoDetailScreen() {
             onPress={handleBack}
             className="w-10 h-10 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
           >
-            <Ionicons name="arrow-back" size={22} color="#007AFF" />
+            <Icon name="arrow-back" size={22} color="#007AFF" />
           </Pressable>
           <Text className="flex-1 ml-3 text-lg font-semibold text-gray-900 dark:text-white" numberOfLines={1}>
             Video
@@ -68,7 +67,7 @@ export default function VideoDetailScreen() {
           <VideoPlayer videoInfo={videoInfo} />
         ) : (
           <View className="aspect-video bg-gray-200 dark:bg-neutral-800 items-center justify-center">
-            <Ionicons name="videocam-off" size={48} color="#666" />
+            <Icon name="videocam-off" size={48} color="#666" />
             <Text className="text-gray-500 mt-2">Video not available</Text>
           </View>
         )}
