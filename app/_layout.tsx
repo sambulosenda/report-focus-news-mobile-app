@@ -63,6 +63,14 @@ export default function RootLayout() {
             gestureDirection: 'horizontal',
           }}
         />
+        <Stack.Screen
+          name="settings"
+          options={{
+            presentation: 'modal',
+            animation: 'slide_from_bottom',
+            gestureEnabled: true,
+          }}
+        />
       </Stack>
     </GraphQLProvider>
   );

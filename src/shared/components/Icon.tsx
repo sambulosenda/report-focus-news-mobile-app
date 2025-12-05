@@ -33,6 +33,7 @@ const iconMap = {
   // Tabs
   'newspaper': { sf: 'newspaper', ionicon: 'newspaper-outline' },
   'settings': { sf: 'gearshape', ionicon: 'settings-outline' },
+  'grid': { sf: 'square.grid.2x2', ionicon: 'grid-outline' },
 
   // Settings
   'phone': { sf: 'iphone', ionicon: 'phone-portrait-outline' },

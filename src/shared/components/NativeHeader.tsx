@@ -36,7 +36,7 @@ export function NativeHeader({
     const height = interpolate(
       scrollY.value,
       [0, SCROLL_DISTANCE],
-      [subtitle ? 60 : 44, 0],
+      [subtitle ? 64 : 48, 0],
       Extrapolation.CLAMP
     );
     const opacity = interpolate(
